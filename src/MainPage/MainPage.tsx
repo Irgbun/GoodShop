@@ -11,10 +11,7 @@ export const MainPage = () => {
   ];
 
   const goodCategories = {
-    category: [
-      { id: 1, type: "house", label: "Дом" },
-      { id: 2, type: "house", label: "Дом" }
-    ],
+    category: { id: 1, type: "house", label: "Дом" },
     items: [
       {
         id: 1,
