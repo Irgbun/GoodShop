@@ -109,7 +109,7 @@ const INITIAL_STORE = {
 
 
 const reducer = (prevState = INITIAL_STORE) => {
-    return
+    return prevState;
 }
 
 
