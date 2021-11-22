@@ -1,11 +1,17 @@
 import css from "./card.module.css";
+import { Card } from 'antd'
 
-export const Card = ({ label, price, img }) => {
+interface CardProdectsProps {
+  label: string,
+  price: number,
+  img: string
+}
+
+export const CardProducts: React.FC<CardProdectsProps> = ({ label, price, img }) => {
   return (
-    <div className={css.cardWrapper}>
-      <img src={img} alt="картинка" />
-      {label}
-      {price}
-    </div>
-  );
-};
+    <Card hoverable cover={<img scr={img} alt="ProductPhoto" />}>
+      <h3>{label}</h3>
+      <h2>{price}</h2>
+    </Card>
+  )
+}
