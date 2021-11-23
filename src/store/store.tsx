@@ -3,7 +3,10 @@ import { createStore } from 'redux'
 
 const INITIAL_STORE = {
     popularCategories: {
-        category: { id: 1, type: "house", label: "Дом" },
+        category: [
+            { id: 1, type: "house", label: "Дом" },
+            { id: 2, type: "house2", label: "Дом2" },
+            { id: 3, type: "house3", label: "Дом3" }],
         items: [
             {
                 id: 1,
