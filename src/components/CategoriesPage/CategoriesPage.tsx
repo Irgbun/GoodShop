@@ -1,4 +1,4 @@
-import { CardProducts } from "../Card";
+import { Categories } from "../Categories";
 import { useSelector } from "react-redux";
 import { Selectors } from "../../store";
 import { useParams, useNavigate } from 'react-router-dom';
@@ -12,22 +12,20 @@ interface categoriesFind {
 
 export const CategoriesPage = () => {
     const popularCategories = useSelector(Selectors.getPopularCategories);
-    const { category } = useParams()
+    const { type } = useParams()
     const navigate = useNavigate()
-
+    const isTypeTrue = popularCategories.category.find((el: categoriesFind) => el.type === type)
+    
     const clickNavigate = () => {
-        return navigate('type')
+        return navigate('/')
     }
+
+    const error = <h1>"Категория не найдена, вернуться" <button onClick={clickNavigate}>назад</button></h1>
 
     return (
         <div>
-            {popularCategories.category.find( (el: categoriesFind) => {
-                if (el.type === category) {
-                    return <CardProducts label={el.label} price={el.price} img={el.img} />
-                } else {
-                    return <h1>"Категория не найдена, вернуться" <button onClick={clickNavigate}>назад</button></h1>
-                }
-            } )}
+            {isTypeTrue && <Categories  />}
+            {!isTypeTrue && error}
         </div>
     )
 }

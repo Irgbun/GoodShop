@@ -1,25 +1,46 @@
 import { CardProducts } from "../Card";
 import { useSelector } from "react-redux";
 import { Selectors } from "../../store";
+import { Row, Col } from 'antd'
+import css from './Categories.module.css'
 
-interface popularCategoriesMapItems {
+interface popularCategoriesItemsMap {
   label: string,
   price: number,
-  img: string
+  img: string,
+  category_type: string
 }
 
-interface popularCategoriesMapCategory {
+interface popularCategoriesMap {
   label: string,
+  type: string
 }
 
 export const Categories = () => {
   const popularCategories = useSelector(Selectors.getPopularCategories);
   return (
     <div>
-      {popularCategories.category.map( (item: popularCategoriesMapCategory) => item.label)}
-      {popularCategories.items.map((item: popularCategoriesMapItems) => (
-        <CardProducts label={item.label} price={item.price} img={item.img} />
-      ))}
+      {popularCategories.category.map((el: popularCategoriesMap) => {
+        return (
+          <div className={css.CatrgoriesWrapper}>
+            <div className={css.CategoriesTitle}>
+              {el.label}
+            </div>
+            <Row>
+              {popularCategories.items.map((item: popularCategoriesItemsMap) => {
+                if (el.type === item.category_type) {
+                  return (
+                    <Col span={6}>
+                      <CardProducts label={item.label} price={item.price} img={item.img} />
+                    </Col>
+                  )
+                } 
+                return null
+              })}
+            </Row>
+          </div>
+        )
+      })}
     </div>
   );
 };
