@@ -1,0 +1,32 @@
+.ProductPageWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img {
+    width: 900px;
+    height: 700px;
+}
+
+.InfoWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.label {
+    font-size: 45px;
+    font-weight: 500;
+}
+
+.price {
+    font-size: 50px;
+    font-weight: 450;
+}
+
+.description {
+    font-size: 20px;
+}
