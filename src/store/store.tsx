@@ -1,5 +1,6 @@
 import { createStore } from 'redux'
 
+export type RootState = ReturnType<typeof store.getState>
 
 const INITIAL_STORE = {
     popularCategories: {

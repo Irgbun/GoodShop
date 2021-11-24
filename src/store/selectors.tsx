@@ -1,3 +1,5 @@
-export const getPopularCategories = (state: any) => state.popularCategories
+import { RootState } from './store'
 
-export const getCategories = (state: any) => state.categories
+export const getPopularCategories = (state: RootState) => state.popularCategories
+
+export const getCategories = (state: RootState) => state.categories
