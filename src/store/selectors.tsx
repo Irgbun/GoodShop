@@ -1,3 +1,3 @@
-export const getPopularCategories = (state) => state.popularCategories
+export const getPopularCategories = (state: any) => state.popularCategories
 
-export const getCategories = (state) => state.categories
+export const getCategories = (state: any) => state.categories

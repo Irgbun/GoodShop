@@ -1,10 +1,19 @@
 import { Routes, Route } from 'react-router-dom'
 import { MainPage } from './MainPage'
+import { CategoriesPage } from './CategoriesPage'
+import { Footer } from './Footer'
+import './App.css'
+
 
 export function App() {
   return (
-    <Routes>
-      <Route path="/" element={ <MainPage /> } />
-    </Routes>
+    <div>
+      
+      <Routes>
+        <Route path="/" element={ <MainPage /> } />
+        <Route path="/:type" element={ <CategoriesPage /> } />
+      </Routes>
+      <Footer />
+    </div>
   );
 }

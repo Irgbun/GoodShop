@@ -1,0 +1,14 @@
+@import '~antd/dist/antd.css';
+
+.CatrgoriesWrapper {
+    margin-bottom: 10px;
+}
+
+.CategoriesTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    background-color: rgb(243, 83, 34);
+    margin-bottom: 20px;
+}
