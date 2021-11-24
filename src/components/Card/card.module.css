@@ -1,8 +1,5 @@
-.cardWrapper {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    width: 150px;
-    height: 150px;
-  }
-  
+@import '~antd/dist/antd.css';
+img {
+ width: 150px;
+ height: 450px; 
+}
