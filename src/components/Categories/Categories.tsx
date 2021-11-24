@@ -8,7 +8,8 @@ interface popularCategoriesItemsMap {
   label: string,
   price: number,
   img: string,
-  category_type: string
+  category_type: string,
+  id: number,
 }
 
 interface popularCategoriesMap {
@@ -31,7 +32,7 @@ export const Categories = () => {
                 if (el.type === item.category_type) {
                   return (
                     <Col span={6}>
-                      <CardProducts label={item.label} price={item.price} img={item.img} />
+                      <CardProducts label={item.label} price={item.price} img={item.img} type={item.category_type} id={item.id} />
                     </Col>
                   )
                 } 

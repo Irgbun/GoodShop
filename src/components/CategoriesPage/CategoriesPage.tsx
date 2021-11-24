@@ -17,7 +17,7 @@ export const CategoriesPage = () => {
     const isTypeTrue = popularCategories.category.find((el: categoriesFind) => el.type === type)
     
     const clickNavigate = () => {
-        return navigate('/')
+        return navigate(-1)
     }
 
     const error = <h1>"Категория не найдена, вернуться" <button onClick={clickNavigate}>назад</button></h1>
