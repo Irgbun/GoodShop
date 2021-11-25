@@ -3,7 +3,7 @@ import { MainPage } from './MainPage'
 import { CategoriesPage } from './CategoriesPage'
 import { ProductsPage } from './ProductsPage'
 import { Footer } from './Footer'
-import './App.css'
+import 'antd/dist/antd.css';
 
 
 export function App() {
