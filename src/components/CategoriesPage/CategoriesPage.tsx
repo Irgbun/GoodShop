@@ -1,13 +1,25 @@
-import { Categories } from "../Categories";
+import css from './CategoriesPage.module.css'
 import { useSelector } from "react-redux";
 import { Selectors } from "../../store";
 import { useParams, useNavigate } from 'react-router-dom';
+import { CardProducts } from "../Card";
+import { Row, Col } from 'antd'
 
 interface categoriesFind {
     type: string,
+}
+
+interface categoryMap {
+    label: string,
+    type: string
+}
+
+interface itemsMap {
     label: string,
     price: number,
-    img: string
+    img: string,
+    category_type: string,
+    id: number,
 }
 
 export const CategoriesPage = () => {
@@ -24,7 +36,33 @@ export const CategoriesPage = () => {
 
     return (
         <div>
-            {isTypeTrue && <Categories  />}
+            {isTypeTrue && 
+                <div>
+                  {popularCategories.category.map((el: categoryMap) => {
+                      if (el.type === type) {
+                        return (
+                            <div className={css.CategoriesWrapper}>
+                              <div className={css.CategoriesTitle}>
+                                {el.label}
+                              </div>
+                              <Row>
+                                {popularCategories.items.map((item: itemsMap) => {
+                                  if (el.type === item.category_type) {
+                                    return (
+                                      <Col span={6}>
+                                        <CardProducts label={item.label} price={item.price} img={item.img} type={item.category_type} id={item.id} />
+                                      </Col>
+                                    )
+                                  } 
+                                  return null
+                                })}
+                              </Row>
+                            </div>
+                          )
+                      }
+                      return null
+                  })}
+                </div>}
             {!isTypeTrue && error}
         </div>
     )
