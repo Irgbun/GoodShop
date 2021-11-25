@@ -26,20 +26,22 @@ export const CategoriesPage = () => {
     const popularCategories = useSelector(Selectors.getPopularCategories);
     const { type } = useParams()
     const navigate = useNavigate()
-    const isTypeTrue = popularCategories.category.find((el: categoriesFind) => el.type === type)
+    const categories = popularCategories.category.find((el: categoriesFind) => el.type === type)
     
     const clickNavigate = () => {
         return navigate(-1)
     }
 
-    const error = <h1>"Категория не найдена, вернуться" <button onClick={clickNavigate}>назад</button></h1>
+    if (!categories) {
+      return (
+        <h1>"Категория не найдена, вернуться" <button onClick={clickNavigate}>назад</button></h1>
+      )
+    }
+
 
     return (
-        <div>
-            {isTypeTrue && 
                 <div>
                   {popularCategories.category.map((el: categoryMap) => {
-                      if (el.type === type) {
                         return (
                             <div className={css.CategoriesWrapper}>
                               <div className={css.CategoriesTitle}>
@@ -59,11 +61,7 @@ export const CategoriesPage = () => {
                               </Row>
                             </div>
                           )
-                      }
-                      return null
                   })}
-                </div>}
-            {!isTypeTrue && error}
-        </div>
+                </div>
     )
 }
