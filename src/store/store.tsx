@@ -1,4 +1,5 @@
 import { createStore } from 'redux'
+import { rootReducer } from './reducers'
 
 export type RootState = ReturnType<typeof store.getState>
 
@@ -25,10 +26,4 @@ const INITIAL_STORE = {
     { id: 3, type: "house3", label: "Дом3" }]
 }
 
-
-const reducer = (prevState = INITIAL_STORE) => {
-    return prevState;
-}
-
-
-export const store = createStore(reducer)
+export const store = createStore(rootReducer)
