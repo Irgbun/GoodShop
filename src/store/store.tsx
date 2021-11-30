@@ -24,12 +24,4 @@ const INITIAL_STORE = {
 
 export const store = createStore(rootReducer)
 
-
-store.dispatch({
-    type: 'addCatigories',
-    type: 'addCart',
-    type: 'addMenuCategories'
-})
-
-
 // categories: [{ id: 1, type: "house", label: "Дом" }]
