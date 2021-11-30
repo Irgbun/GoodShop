@@ -18,15 +18,31 @@ interface CategoryArray {
 export class Api extends React.Component {
 
     getDataItems(): Promise<{ items: ItemsArray[], total: number }> {
-        return fetch('./serverShop.js').then((resp) => {
+        return fetch('/api/good').then((resp) => {
             if (resp.ok) {
                 return resp.json
             }
         })
     }
 
-    getDataCAtegory(): Promise<{  categories: CategoryArray[], total: number }> {
-        return fetch('./serverShop.js').then((resp) => {
+    getDataCategory(): Promise<{  categories: CategoryArray[] }> {
+        return fetch('/api/categories').then((resp) => {
+            if (resp.ok) {
+                return resp.json
+            }
+        })
+    }
+
+    getDataPopularCategory(): Promise<{ category: CategoryArray[], items: ItemsArray[] }> {
+        return fetch('/api/popular_categories').then((resp) => {
+            if (resp.ok) {
+                return resp.json
+            }
+        })
+    }
+
+    getDataCart() {
+        return fetch('/api/cart').then((resp) => {
             if (resp.ok) {
                 return resp.json
             }
