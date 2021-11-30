@@ -19,11 +19,7 @@ const INITIAL_STORE = {
             { id: 10, category_type: "house", label: "Коврик", price: 88, img: "https://source.unsplash.com/random", description: "Описание продукта, который мы должны видеть тут" },
             { id: 11, category_type: "house", label: "Коврик", price: 84, img: "https://source.unsplash.com/random", description: "Описание продукта, который мы должны видеть тут" },
             { id: 12, category_type: "house", label: "Коврик", price: 96, img: "https://source.unsplash.com/random", description: "Описание продукта, который мы должны видеть тут" }]
-    }, 
-    categories: [
-    { id: 1, type: "house", label: "Дом" },
-    { id: 2, type: "house2", label: "Дом2" },
-    { id: 3, type: "house3", label: "Дом3" }]
+    }
 }
 
 export const store = createStore(rootReducer)
@@ -34,3 +30,6 @@ store.dispatch({
     type: 'addCart',
     type: 'addMenuCategories'
 })
+
+
+// categories: [{ id: 1, type: "house", label: "Дом" }]
