@@ -1,6 +1,8 @@
+import { addPopularCategories } from '../../constants'
+
 export function popularCategories(state = [], action) {
     switch(action.type) {
-        case 'addCatigories':
+        case addPopularCategories:
             return state.concat([action])
         default:
             return state

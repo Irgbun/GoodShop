@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
-import { popularCategories } from './popularCategories'
-import { cart } from './cart'
-import { menuCategories } from './menuCategories'
+import { popularCategories } from './popularCategories/popularCategories'
+import { cart } from './cart/cart'
+import { menuCategories } from './menuCategories/menuCategories'
 
 
 export const rootReducer = combineReducers({ 
