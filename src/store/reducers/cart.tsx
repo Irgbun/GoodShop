@@ -1,8 +1,8 @@
 export function cart(state = [], action) {
     switch(action.type) {
-        case 'cart':
-            return state.concat([action.text])
-        defolt:
+        case 'addCart':
+            return state.concat([action])
+        default:
             return state
     }
 }

@@ -1,8 +1,9 @@
 export function menuCategories(state = [], action) {
     switch(action.type) {
-        case 'fetch':
-            return state.concat([action.text])
-        defolt:
+        case 'addMenuCategories':
+            return state.concat([action])
+        default:
             return state
     }
+}
 }
