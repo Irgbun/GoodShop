@@ -8,4 +8,3 @@ export function menuCategories(state = [], action) {
             return state
     }
 }
-}
