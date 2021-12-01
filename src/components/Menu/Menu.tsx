@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useSelector } from "react-redux";
 import { Selectors } from "../../store";
 import { Link } from "react-router-dom";
@@ -12,6 +13,11 @@ interface categpriesMap {
 
 export const MenuCategories = () => {
   const categories = useSelector(Selectors.getCategories);
+
+  useEffect(() => {
+    dispatchEvent(action)
+  }, [])
+
   return (
     <Row>
       <Col span={6}>
