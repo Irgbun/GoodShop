@@ -1,9 +1,10 @@
 import css from './CategoriesPage.module.css'
 import { useSelector } from "react-redux";
-import { Selectors } from "../../store";
+import { PopularCategoriesSelextors, PopularCategoriesActions } from "../../store";
 import { useParams, useNavigate } from 'react-router-dom';
 import { CardProducts } from "../Card";
 import { Row, Col } from 'antd'
+import { useEffect } from 'react';
 
 interface categoriesFind {
     type: string,
@@ -23,11 +24,18 @@ interface itemsMap {
 }
 
 export const CategoriesPage = () => {
-    const popularCategories = useSelector(Selectors.getPopularCategories);
+
+    useEffect(() => {
+      dispatch(PopularCategoriesActions.fetchPopularCategories())
+    }, [])
+  
+
+    const popularCategories = useSelector(PopularCategoriesSelextors.getPopularCategories);
     const { type } = useParams()
     const navigate = useNavigate()
     const categories = popularCategories.category.find((el: categoriesFind) => el.type === type)
-    
+
+
     const clickNavigate = () => {
         return navigate(-1)
     }

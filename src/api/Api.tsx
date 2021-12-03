@@ -1,9 +1,7 @@
-import React from "react";
-
 interface Goods {
     id: number,
     label: string,
-    category_type: string,
+    type: string,
     img: string,
     price: number,
     description: string
@@ -33,7 +31,7 @@ export class Api {
         })
     }
 
-    getDataPopularCategory(): Promise<{ category: Category[], items: Goods[] }> {
+    getDataPopularCategory(): Promise<{ categories: Category, items: Goods[] }[]> {
         return fetch('/api/popular_categories').then((resp) => {
             if (resp.ok) {
                 return resp.json()
