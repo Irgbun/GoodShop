@@ -1,9 +1,8 @@
 import { useEffect } from 'react'
 import { useSelector } from "react-redux";
-import { Selectors } from "../../store";
+import { MenuCategoriesSelectors, MenuCategoriesActions } from "../../store";
 import { Link } from "react-router-dom";
-import { Menu } from "antd";
-import { Row, Col } from 'antd';
+import { Menu, Row, Col } from "antd";
 
 interface categpriesMap {
   id: number,
@@ -12,11 +11,11 @@ interface categpriesMap {
 }
 
 export const MenuCategories = () => {
-  const categories = useSelector(Selectors.getCategories);
+  const categories = useSelector(MenuCategoriesSelectors.getCategories);
 
   useEffect(() => {
-    dispatchEvent(action)
-  }, [])
+    dispatchEvent(MenuCategoriesActions.fetchMenuCategories())
+  }, [menuAction])
 
   return (
     <Row>
