@@ -14,8 +14,8 @@ export const MenuCategories = () => {
   const categories = useSelector(MenuCategoriesSelectors.getCategories);
 
   useEffect(() => {
-    dispatchEvent(MenuCategoriesActions.fetchMenuCategories())
-  }, [menuAction])
+    dispatch(MenuCategoriesActions.fetchMenuCategories())
+  }, [])
 
   return (
     <Row>

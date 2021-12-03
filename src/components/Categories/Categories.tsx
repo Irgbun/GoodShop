@@ -1,6 +1,6 @@
 import { CardProducts } from "../Card";
 import { useSelector } from "react-redux";
-import { Selectors } from "../../store";
+import { PopularCategoriesSelextors } from "../../store";
 import { Row, Col } from 'antd'
 import css from './Categories.module.css'
 
@@ -18,7 +18,7 @@ interface popularCategoriesMap {
 }
 
 export const Categories = () => {
-  const popularCategories = useSelector(Selectors.getPopularCategories);
+  const popularCategories = useSelector(PopularCategoriesSelextors.getPopularCategories);
   return (
     <div>
       {popularCategories.category.map((el: popularCategoriesMap) => {
