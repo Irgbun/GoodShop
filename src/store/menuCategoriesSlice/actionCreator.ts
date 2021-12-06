@@ -14,7 +14,7 @@ export const getMenuCategoriesFailure = () => ({ type: MENU_CATEGORIES_ACTIONS.G
 
 
 
-export const fetchMenuCategories = () => async(dispatch: Dispatch) => {
+export const fetchMenuCategories = () => async(dispatch: Dispatch<any>) => {
     dispatch(getMenuCategories())
     new Api().getDataCategory().then((data) => dispatch(getMenuCategoriesSuccess(data.categories))).catch(() => dispatch(getMenuCategoriesFailure()))
 }

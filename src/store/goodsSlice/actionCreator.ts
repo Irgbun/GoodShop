@@ -14,7 +14,7 @@ export const getGoodsFailure = () => ({ type: GOODS_ACTIONS.GET_GOODS_FAILURE })
 
 
 
-export const fetchGoods = () => async(dispatch: Dispatch) => {
+export const fetchGoods = () => async(dispatch: Dispatch<any>) => {
     dispatch(getGoods())
     new Api().getDataGoods().then((data) => dispatch(getGoodsSuccess(data.items))).catch(() => dispatch(getGoodsFailure()))
 }
