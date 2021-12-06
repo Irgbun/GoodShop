@@ -1,38 +1,57 @@
 import { CardProducts } from "../Card";
-import { useSelector } from "react-redux";
-import { PopularCategoriesSelextors } from "../../store";
+import { useSelector, useDispatch } from "react-redux";
+import { PopularCategoriesSelextors, PopularCategoriesActions } from "../../store";
 import { Row, Col } from 'antd'
 import css from './Categories.module.css'
+import { useEffect } from "react";
 
 interface popularCategoriesItemsMap {
+  id: number,
+  type: string,
   label: string,
   price: number,
   img: string,
-  category_type: string,
-  id: number,
+  description: string
 }
 
 interface popularCategoriesMap {
-  label: string,
-  type: string
+  categories: {
+    id: number,
+    type: string,
+    label: string
+  },
+  items: {
+      id: number,
+      type: string,
+      label: string,
+      price: number,
+      img: string,
+      description: string
+  }[]
 }
 
 export const Categories = () => {
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    dispatch(PopularCategoriesActions.fetchPopularCategories())
+  })
+
   const popularCategories = useSelector(PopularCategoriesSelextors.getPopularCategories);
   return (
     <div>
-      {popularCategories.category.map((el: popularCategoriesMap) => {
+      {popularCategories.data.map((el: popularCategoriesMap) => {
         return (
           <div className={css.CatrgoriesWrapper}>
             <div className={css.CategoriesTitle}>
-              {el.label}
+              {el.categories.label}
             </div>
             <Row>
-              {popularCategories.items.map((item: popularCategoriesItemsMap) => {
-                if (el.type === item.category_type) {
+              {el.items.map((item: popularCategoriesItemsMap) => {
+                if (el.categories.type === item.type) {
                   return (
                     <Col span={6}>
-                      <CardProducts label={item.label} price={item.price} img={item.img} type={item.category_type} id={item.id} />
+                      <CardProducts label={item.label} price={item.price} img={item.img} type={item.type} id={item.id} />
                     </Col>
                   )
                 } 

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { MenuCategoriesSelectors, MenuCategoriesActions } from "../../store";
 import { Link } from "react-router-dom";
 import { Menu, Row, Col } from "antd";
@@ -12,6 +12,7 @@ interface categpriesMap {
 
 export const MenuCategories = () => {
   const categories = useSelector(MenuCategoriesSelectors.getCategories);
+  const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(MenuCategoriesActions.fetchMenuCategories())
@@ -21,7 +22,7 @@ export const MenuCategories = () => {
     <Row>
       <Col span={6}>
         <Menu mode="vertical">
-          {categories.map((item: categpriesMap) => {
+          {categories.loadStatus && categories.data.map((item: categpriesMap) => {
             return (
               <Menu.Item key={item.id}>
                 <Link to={`${item.type}`}> {item.label} </Link>

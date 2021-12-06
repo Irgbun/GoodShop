@@ -1,48 +1,49 @@
 import css from './ProductPage.module.css'
-import { useSelector } from "react-redux";
-import { PopularCategoriesSelextors, GoodsActions } from "../../store";
+import { useSelector, useDispatch } from "react-redux";
+import { GoodsSelectors, GoodsActions } from "../../store";
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
-interface ProductsPageFind {
-    category_type: string,
+interface GoodsFind {
+    type: string,
     id: number,
 }
 
 export const ProductsPage = () => {
+    const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(GoodsActions.fetchGoods)
-    }, [])
+    })
 
-    const popularCategories = useSelector(PopularCategoriesSelextors.getPopularCategories);
+    const goods = useSelector(GoodsSelectors.getGoods);
     const { type, id } = useParams()
     const navigate = useNavigate()
-    const item = popularCategories.items.find((el: ProductsPageFind) => el.category_type === type && (el.id).toString() === id)
+    const good = goods.data.find((el: GoodsFind) => el.type === type && (el.id).toString() === id)
 
 
     const clickNavigate = () => {
         return navigate(-1)
     }
 
-    if (!item) {
+    if (!good) {
         return <h1>"Продукт не найдена, вернуться" <button onClick={clickNavigate}>назад</button></h1>
     }
 
     return (
         <div className={css.ProductPageWrapper}>
                                     <div>
-                                        <img src={item.img} alt="ProductPhoto" className={css.img} />
+                                        <img src={good.img} alt="ProductPhoto" className={css.img} />
                                     </div>
                                     <div className={css.InfoWrapper}>
                                         <div className={css.label}>
-                                            {item.label}
+                                            {good.label}
                                         </div>
                                         <div className={css.price}>
-                                            {item.price}
+                                            {good.price}
                                         </div>
                                         <div className={css.description}>
-                                            {item.description}
+                                            {good.description}
                                         </div>
                                     </div>
                                 </div>

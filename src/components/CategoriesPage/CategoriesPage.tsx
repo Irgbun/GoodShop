@@ -1,39 +1,54 @@
 import css from './CategoriesPage.module.css'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { PopularCategoriesSelextors, PopularCategoriesActions } from "../../store";
 import { useParams, useNavigate } from 'react-router-dom';
 import { CardProducts } from "../Card";
 import { Row, Col } from 'antd'
 import { useEffect } from 'react';
 
-interface categoriesFind {
-    type: string,
+interface popularCategoriesFind {
+  categories: {
+    type: string
+  },
 }
 
-interface categoryMap {
-    label: string,
-    type: string
+interface popularCategoryMap {
+  categories: {
+    id: number,
+    type: string,
+    label: string
+  },
+  items: {
+      id: number,
+      type: string,
+      label: string,
+      price: number,
+      img: string,
+      description: string
+  }[]
 }
 
 interface itemsMap {
     label: string,
     price: number,
     img: string,
-    category_type: string,
+    type: string,
     id: number,
+    description: string
 }
 
 export const CategoriesPage = () => {
+  const dispatch = useDispatch()
 
     useEffect(() => {
       dispatch(PopularCategoriesActions.fetchPopularCategories())
-    }, [])
+    })
   
 
     const popularCategories = useSelector(PopularCategoriesSelextors.getPopularCategories);
     const { type } = useParams()
     const navigate = useNavigate()
-    const categories = popularCategories.category.find((el: categoriesFind) => el.type === type)
+    const categories = popularCategories.data.find((el: popularCategoriesFind) => el.categories.type === type)
 
 
     const clickNavigate = () => {
@@ -49,18 +64,18 @@ export const CategoriesPage = () => {
 
     return (
                 <div>
-                  {popularCategories.category.map((el: categoryMap) => {
+                  {popularCategories.data.map((el: popularCategoryMap) => {
                         return (
                             <div className={css.CategoriesWrapper}>
                               <div className={css.CategoriesTitle}>
-                                {el.label}
+                                {el.categories.label}
                               </div>
                               <Row>
-                                {popularCategories.items.map((item: itemsMap) => {
-                                  if (el.type === item.category_type) {
+                                {el.items.map((item: itemsMap) => {
+                                  if (el.categories.type === item.type) {
                                     return (
                                       <Col span={6}>
-                                        <CardProducts label={item.label} price={item.price} img={item.img} type={item.category_type} id={item.id} />
+                                        <CardProducts label={item.label} price={item.price} img={item.img} type={item.type} id={item.id} />
                                       </Col>
                                     )
                                   } 
