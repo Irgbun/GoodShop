@@ -5,8 +5,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 interface GoodsFind {
-    type: string,
-    id: number,
+    categoryTypeId: string,
+    id: string,
 }
 
 export const ProductsPage = () => {
@@ -14,12 +14,12 @@ export const ProductsPage = () => {
 
     useEffect(() => {
         dispatch(GoodsActions.fetchGoods)
-    })
+    }, [])
 
     const goods = useSelector(GoodsSelectors.getGoods);
     const { type, id } = useParams()
     const navigate = useNavigate()
-    const good = goods.data.find((el: GoodsFind) => el.type === type && (el.id).toString() === id)
+    const good = goods.data.find((el: GoodsFind) => el.categoryTypeId === type && (el.id).toString() === id)
 
 
     const clickNavigate = () => {
