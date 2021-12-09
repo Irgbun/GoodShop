@@ -1,25 +1,26 @@
 interface Goods {
-    id: number,
+    id: string,
     label: string,
-    type: string,
+    categoryTypeId: string,
     img: string,
     price: number,
     description: string
 }
 
 interface Category {
-    id: number,
+    id: string,
     label: string,
     type: string,
 }
 
 export class Api {
 
-    getDataGoods(): Promise<{ items: Goods[], total: number }> {
-        return fetch('/api/good').then((resp) => {
+    getDataGoods(id?: string): Promise<{ items: Goods[], total: number }> {
+        return fetch(`/api/good?categoryTypeId=${id}`).then((resp) => {
             if (resp.ok) {
                 return resp.json()
             }
+            throw new Error("Goods not working")
         })
     }
 
@@ -28,14 +29,17 @@ export class Api {
             if (resp.ok) {
                 return resp.json()
             }
+            throw new Error("List of categories not working")
         })
     }
 
-    getDataPopularCategory(): Promise<{ categories: Category, items: Goods[] }[]> {
-        return fetch('/api/popular_categories').then((resp) => {
+    getDataPopularCategory(id?: string): Promise<{ category: Category, items: Goods[] }[]> {
+        return fetch(`/api/popular_categories?id=${id}`).then((resp) => {
             if (resp.ok) {
+                console.log(resp)
                 return resp.json()
             }
+            throw new Error("Popular categories not working")
         })
     }
 
@@ -44,6 +48,14 @@ export class Api {
             if (resp.ok) {
                 return resp.json()
             }
+            throw new Error("cart not working")
+        })
+    }
+
+    putDataCart() {
+        return fetch('/api/cart', {
+            method: 'PUT',
+            body: "",
         })
     }
 }
