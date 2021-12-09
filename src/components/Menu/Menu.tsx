@@ -1,28 +1,30 @@
 import { useEffect } from 'react'
-import { useSelector } from "react-redux";
-import { Selectors } from "../../store";
+import { useSelector, useDispatch } from "react-redux";
+import { MenuCategoriesSelectors, MenuCategoriesActions } from "../../store";
 import { Link } from "react-router-dom";
-import { Menu } from "antd";
-import { Row, Col } from 'antd';
+import { Menu, Row, Col } from "antd";
 
 interface categpriesMap {
-  id: number,
+  id: string,
   type: string,
   label: string
 }
 
 export const MenuCategories = () => {
-  const categories = useSelector(Selectors.getCategories);
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatchEvent(action)
+    dispatch(MenuCategoriesActions.fetchMenuCategories())
   }, [])
 
+  const categories = useSelector(MenuCategoriesSelectors.getCategories);
   return (
     <Row>
       <Col span={6}>
         <Menu mode="vertical">
-          {categories.map((item: categpriesMap) => {
+          {categories.loadStatus === 'failure' && 'Something went wrong'}
+          {categories.loadStatus === 'loading' && 'Loading list'}
+          {categories.loadStatus === 'loaded' && categories.data.map((item: categpriesMap) => {
             return (
               <Menu.Item key={item.id}>
                 <Link to={`${item.type}`}> {item.label} </Link>

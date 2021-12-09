@@ -1,38 +1,47 @@
 import css from './CategoriesPage.module.css'
-import { useSelector } from "react-redux";
-import { Selectors } from "../../store";
+import { useSelector, useDispatch } from "react-redux";
+import { PopularCategoriesSelextors, PopularCategoriesActions } from "../../store";
 import { useParams, useNavigate } from 'react-router-dom';
 import { CardProducts } from "../Card";
 import { Row, Col } from 'antd'
+import { useEffect } from 'react';
 
-interface categoriesFind {
+interface popularCategoriesFind {
+  category: {
     type: string,
-}
-
-interface categoryMap {
-    label: string,
-    type: string
+  },
 }
 
 interface itemsMap {
     label: string,
     price: number,
     img: string,
-    category_type: string,
-    id: number,
+    categoryTypeId: string,
+    id: string,
+    description: string
 }
 
 export const CategoriesPage = () => {
-    const popularCategories = useSelector(Selectors.getPopularCategories);
+  const dispatch = useDispatch()
+
+  
+
+    const popularCategories = useSelector(PopularCategoriesSelextors.getPopularCategories);
     const { type } = useParams()
     const navigate = useNavigate()
-    const categories = popularCategories.category.find((el: categoriesFind) => el.type === type)
+    const categories = popularCategories.data.find((el: popularCategoriesFind) => el.category.type === type)
+
+    useEffect(() => {
+      dispatch(PopularCategoriesActions.fetchPopularCategories(categories?.category.id))
+    }, [])
     
+    console.log(popularCategories)
+
     const clickNavigate = () => {
         return navigate(-1)
     }
 
-    if (!categories) {
+    if (categories?.category.type !== type) {
       return (
         <h1>"Категория не найдена, вернуться" <button onClick={clickNavigate}>назад</button></h1>
       )
@@ -40,28 +49,24 @@ export const CategoriesPage = () => {
 
 
     return (
-                <div>
-                  {popularCategories.category.map((el: categoryMap) => {
-                        return (
-                            <div className={css.CategoriesWrapper}>
-                              <div className={css.CategoriesTitle}>
-                                {el.label}
-                              </div>
-                              <Row>
-                                {popularCategories.items.map((item: itemsMap) => {
-                                  if (el.type === item.category_type) {
-                                    return (
-                                      <Col span={6}>
-                                        <CardProducts label={item.label} price={item.price} img={item.img} type={item.category_type} id={item.id} />
-                                      </Col>
-                                    )
-                                  } 
-                                  return null
-                                })}
-                              </Row>
-                            </div>
-                          )
-                  })}
-                </div>
+      <div>
+        <div className={css.CategoriesWrapper}>
+          <div className={css.CategoriesTitle}>
+            {categories?.category.label}
+          </div>
+          <Row>
+            {categories?.items.map((item: itemsMap) => {
+              if (categories.category.id === item.categoryTypeId) {
+                return (
+                  <Col span={6}>
+                    <CardProducts label={item.label} price={item.price} img={item.img} type={item.categoryTypeId} id={item.id} />
+                  </Col>
+                )
+              }
+              return null
+            })}
+          </Row>
+        </div>
+      </div>
     )
 }

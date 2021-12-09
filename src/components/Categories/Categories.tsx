@@ -1,38 +1,59 @@
 import { CardProducts } from "../Card";
-import { useSelector } from "react-redux";
-import { Selectors } from "../../store";
+import { useSelector, useDispatch } from "react-redux";
+import { PopularCategoriesSelextors, PopularCategoriesActions } from "../../store";
 import { Row, Col } from 'antd'
 import css from './Categories.module.css'
+import { useEffect } from "react";
 
 interface popularCategoriesItemsMap {
+  id: string,
+  categoryTypeId: string,
   label: string,
   price: number,
   img: string,
-  category_type: string,
-  id: number,
+  description: string
 }
 
 interface popularCategoriesMap {
-  label: string,
-  type: string
+  category: {
+    id: string,
+    type: string,
+    label: string
+  },
+  items: {
+      id: string,
+      categoryTypeId: string,
+      label: string,
+      price: number,
+      img: string,
+      description: string
+  }[]
 }
 
 export const Categories = () => {
-  const popularCategories = useSelector(Selectors.getPopularCategories);
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    dispatch(PopularCategoriesActions.fetchPopularCategories())
+  }, [])
+
+  const popularCategories = useSelector(PopularCategoriesSelextors.getPopularCategories);
+  console.log(popularCategories)
   return (
     <div>
-      {popularCategories.category.map((el: popularCategoriesMap) => {
+      {popularCategories.data.map((el: popularCategoriesMap) => {
         return (
           <div className={css.CatrgoriesWrapper}>
             <div className={css.CategoriesTitle}>
-              {el.label}
+              {el.category.label} 
             </div>
             <Row>
-              {popularCategories.items.map((item: popularCategoriesItemsMap) => {
-                if (el.type === item.category_type) {
+              {el.items.map((item: popularCategoriesItemsMap) => {
+                console.log(item.categoryTypeId)
+                if ((el.category.id).toString() === item.categoryTypeId) {
                   return (
                     <Col span={6}>
-                      <CardProducts label={item.label} price={item.price} img={item.img} type={item.category_type} id={item.id} />
+                      <CardProducts label={item.label} price={item.price} img={item.img} type={item.categoryTypeId} id={item.id} />
                     </Col>
                   )
                 } 

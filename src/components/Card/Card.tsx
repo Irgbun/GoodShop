@@ -7,7 +7,7 @@ interface CardProdectsProps {
   price: number,
   img: string,
   type: string,
-  id: number
+  id: string
 }
 
 export const CardProducts: React.FC<CardProdectsProps> = ({ label, price, img, type, id }) => {

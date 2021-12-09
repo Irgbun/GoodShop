@@ -1,7 +1,7 @@
 import { LOAD_STATUSES } from './constants'
 
 export interface Cart {
-    id: number,
+    id: string,
     label: string
 }
 

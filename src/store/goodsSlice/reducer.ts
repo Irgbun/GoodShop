@@ -1,7 +1,6 @@
-import { POPULAR_CATEGORIES_ACTIONS, LOAD_STATUSES } from './constants'
-import { Action } from 'redux'
+import { GOODS_ACTIONS, LOAD_STATUSES } from './constants'
+import { Action } from "redux";
 import { State } from './types'
-
 
 
 const INITIAL_STATE: State = {
@@ -9,29 +8,28 @@ const INITIAL_STATE: State = {
     data: []
 }
 
-export function popularCategoriesReducer(state = INITIAL_STATE, action: Action<POPULAR_CATEGORIES_ACTIONS>) {
+export function goodsReducer(state = INITIAL_STATE, action: Action<GOODS_ACTIONS>) {
     switch(action.type) {
-        case POPULAR_CATEGORIES_ACTIONS.GET_POPULAR_CATEGORIES:
+        case GOODS_ACTIONS.GET_GOODS:
             return {
                 ...state,
                 loadStatus: LOAD_STATUSES.LOADING
             }
-        case POPULAR_CATEGORIES_ACTIONS.GET_POPULAR_CATEGORIES_SUCCESS:
+        case GOODS_ACTIONS.GET_GOODS_SUCCESS:
             const { payload } = action as {
-                type: POPULAR_CATEGORIES_ACTIONS.GET_POPULAR_CATEGORIES_SUCCESS,
+                type: GOODS_ACTIONS.GET_GOODS_SUCCESS,
                 payload: State['data']
-            } 
-            console.log(payload)
+            }
             return {
                 data: payload,
                 loadStatus: LOAD_STATUSES.LOADED
             }
-        case POPULAR_CATEGORIES_ACTIONS.GET_POPULAR_CATEGORIES_FAILURE:
+        case GOODS_ACTIONS.GET_GOODS_FAILURE:
             return {
                 ...state,
                 loadStatus: LOAD_STATUSES.FAILURE
             }
         default:
-        return state
+            return state
     }
 }
