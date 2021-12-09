@@ -24,11 +24,6 @@ export function cartReducer(state = INITIAL_STATE, action: Action<CART_ACTIONS>)
                 data: payload,
                 loadStatus: LOAD_STATUSES.LOADED
             }
-        case CART_ACTIONS.GET_CART_FAILURE:
-            return {
-                ...state,
-                loadStatus: LOAD_STATUSES.FAILURE
-            }
         case CART_ACTIONS.PUT_CART:
             return {
                 ...state,
@@ -38,11 +33,6 @@ export function cartReducer(state = INITIAL_STATE, action: Action<CART_ACTIONS>)
             return {
                ...state,
                loadStatus: LOAD_STATUSES.LOADED
-            }
-        case CART_ACTIONS.PUT_CART_FAILURE:
-            return {
-                ...state,
-                loadStatus: LOAD_STATUSES.FAILURE
             }
         case CART_ACTIONS.DELERE_CART:
             return {
@@ -54,7 +44,7 @@ export function cartReducer(state = INITIAL_STATE, action: Action<CART_ACTIONS>)
                 ...state,
                 loadStatus: LOAD_STATUSES.LOADED
             }
-        case CART_ACTIONS.DELERE_CART_FAILURE:
+        case CART_ACTIONS.CART_FAILURE:
             return {
                 ...state,
                 loadStatus: LOAD_STATUSES.FAILURE
