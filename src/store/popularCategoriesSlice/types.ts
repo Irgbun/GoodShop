@@ -1,14 +1,14 @@
 import { LOAD_STATUSES } from "./constants";
 
 export interface PopularCategories { 
-    categories: {
-        id: number,
+    category: {
+        id: string,
         type: string,
         label: string
     },
     items: {
-        id: number,
-        type: string,
+        id: string,
+        categoryTypeId: string,
         label: string,
         price: number,
         img: string,

@@ -21,6 +21,7 @@ export function popularCategoriesReducer(state = INITIAL_STATE, action: Action<P
                 type: POPULAR_CATEGORIES_ACTIONS.GET_POPULAR_CATEGORIES_SUCCESS,
                 payload: State['data']
             } 
+            console.log(payload)
             return {
                 data: payload,
                 loadStatus: LOAD_STATUSES.LOADED
