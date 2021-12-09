@@ -6,8 +6,8 @@ import css from './Categories.module.css'
 import { useEffect } from "react";
 
 interface popularCategoriesItemsMap {
-  id: number,
-  type: string,
+  id: string,
+  categoryTypeId: string,
   label: string,
   price: number,
   img: string,
@@ -15,14 +15,14 @@ interface popularCategoriesItemsMap {
 }
 
 interface popularCategoriesMap {
-  categories: {
-    id: number,
+  category: {
+    id: string,
     type: string,
     label: string
   },
   items: {
-      id: number,
-      type: string,
+      id: string,
+      categoryTypeId: string,
       label: string,
       price: number,
       img: string,
@@ -35,23 +35,25 @@ export const Categories = () => {
   
   useEffect(() => {
     dispatch(PopularCategoriesActions.fetchPopularCategories())
-  })
+  }, [])
 
   const popularCategories = useSelector(PopularCategoriesSelextors.getPopularCategories);
+  console.log(popularCategories)
   return (
     <div>
       {popularCategories.data.map((el: popularCategoriesMap) => {
         return (
           <div className={css.CatrgoriesWrapper}>
             <div className={css.CategoriesTitle}>
-              {el.categories.label}
+              {el.category.label} 
             </div>
             <Row>
               {el.items.map((item: popularCategoriesItemsMap) => {
-                if (el.categories.type === item.type) {
+                console.log(item.categoryTypeId)
+                if ((el.category.id).toString() === item.categoryTypeId) {
                   return (
                     <Col span={6}>
-                      <CardProducts label={item.label} price={item.price} img={item.img} type={item.type} id={item.id} />
+                      <CardProducts label={item.label} price={item.price} img={item.img} type={item.categoryTypeId} id={item.id} />
                     </Col>
                   )
                 } 
