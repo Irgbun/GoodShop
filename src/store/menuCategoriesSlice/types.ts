@@ -1,7 +1,7 @@
 import { LOAD_STATUSES } from "./constants";
 
 export interface MenuCategories {
-    id: number,
+    id: string,
     label: string,
     type: string
 }
