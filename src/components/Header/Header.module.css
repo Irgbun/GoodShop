@@ -1,0 +1,36 @@
+.HeaderWrapper {
+    display: flex;
+    background-color: rgba(245, 196, 196, 0.911);
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.HeaderButtonCart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+    width: 100px;
+    height: 50px;
+}
+
+.HeaderBadge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+}
+
+.HeaderLogotipeImg {
+    width: 100px;
+    height: 100px;
+}
+
+.HeaderCartImg {
+    object-fit: cover;
+    width: 110px;
+    height: 60px;
+}
