@@ -25,42 +25,58 @@ export const ProductsPage = () => {
 
     const goods = useSelector(GoodsSelectors.getGoods);
     const cart = useSelector(CartSelectors.getCart)
+    const good = goods.data[0]
+
+    const isGoodInCart = () => {
+        if(cart.data.length !== 0) {
+            cart.data.find((item) => {
+                if(item.id === good.id) {
+                    return true
+                }
+                return false
+            })
+        }
+        return false
+    }
+
     const clickNavigate = () => {
         return navigate(-1)
     }
 
     const addProdToCart = () => {
-        const good = goods.data[0]
-        if(cart.data.map((item) => item === good)) {
-            dispatch(CartActions.putFetchCart(good))
-        }
-        dispatch(CartActions.deleteCart(good))
+        dispatch(CartActions.putFetchCart(good))
     }
+
+    const deleteProdInCart = () => {
+        dispatch(CartActions.deleteFetchCart(good))
+    }
+
+    const deleteButton = <Button onClick={deleteProdInCart}> Удалить из корзины </Button>
+    const addButton = <Button onClick={addProdToCart}> Добавить в корзину </Button>
 
     if (!id || !type) {
         return <h1>"Продукт не найдена, вернуться" <button onClick={clickNavigate}>назад</button></h1>
     } else if (goods.loadStatus === 'loaded') {
-        console.log(goods.data[0])
         return (
             <div className={css.ProductWrapper}>
                 <div className={css.ProductInfoWrapper}>
                     <div>
-                        <img src={goods.data[0].img} alt="ProductPhoto" className={css.img} />
+                        <img src={good.img} alt="ProductPhoto" className={css.img} />
                     </div>
                     <div className={css.InfoWrapper}>
                         <div className={css.label}>
-                            {goods?.data[0].label}
+                            {good.label}
                         </div>
                         <div className={css.price}>
-                            {goods.data[0].price}
+                            {good.price}
                         </div>
                         <div className={css.description}>
-                            {goods.data[0].description}
+                            {good.description}
                         </div>
                     </div>
                 </div>
                 <div>
-                    <Button onClick={addProdToCart}> Добавить в корзину </Button>
+                    {isGoodInCart() ? deleteButton : addButton}
                 </div>
             </div>
         )  
