@@ -1,5 +1,4 @@
-import { CartSelectors } from '../store'
-import { useSelector } from 'react-redux'
+
 
 interface Goods {
     id: string,
@@ -21,7 +20,6 @@ export class Api {
     getDataGoods(id?: string, type?: string): Promise<{ items: Goods[], total: number }> {
         if (type !== undefined && id !== undefined) {
             return fetch(`/api/goods?ids=${id}`).then((resp) => {
-                console.log(resp)
                 if (resp.ok) {
                     return resp.json()
                 }
@@ -79,11 +77,33 @@ export class Api {
         })
     }
 
-    putDataCart() {
-        const cartForPut = useSelector(CartSelectors.getCart)
+    putDataCart(cartForPut: Goods) {
         return fetch('/api/cart', {
             method: 'PUT',
             body: JSON.stringify(cartForPut),
+        }).then((resp) => {
+            if (resp.ok) {
+                console.log("Респ PUT запроса: ", resp)
+                return resp.json()
+            }
+        }).then((data) => {
+            console.log("Все получилось, мы получили данные назад с PUT запросом", data)
+            return data
+        })
+    }
+
+    deleteDataCart(cartForDelete: Goods) {
+        return fetch('/api/cart', {
+            method: 'DELETE',
+            body: JSON.stringify(cartForDelete),
+        }).then((resp) => {
+            if(resp.ok) {
+                console.log("Респ DELETE запроса", resp)
+                return resp.json()
+            }
+        }).then((data) => {
+            console.log("Все получилось, мы получили данные назад с DELETE запросом", data)
+            return data
         })
     }
 }

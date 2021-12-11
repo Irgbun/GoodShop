@@ -1,6 +1,6 @@
 import css from './ProductPage.module.css'
 import { useSelector, useDispatch } from "react-redux";
-import { GoodsSelectors, GoodsActions } from "../../store";
+import { GoodsSelectors, GoodsActions, CartActions, CartSelectors } from "../../store";
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Button } from 'antd'
@@ -21,18 +21,26 @@ export const ProductsPage = () => {
         dispatch(GoodsActions.fetchGoods(id, type))
     }, [])
 
-    const addProdToCart = () => {
 
-    }
 
     const goods = useSelector(GoodsSelectors.getGoods);
+    const cart = useSelector(CartSelectors.getCart)
     const clickNavigate = () => {
         return navigate(-1)
+    }
+
+    const addProdToCart = () => {
+        const good = goods.data[0]
+        if(cart.data.map((item) => item === good)) {
+            dispatch(CartActions.putFetchCart(good))
+        }
+        dispatch(CartActions.deleteCart(good))
     }
 
     if (!id || !type) {
         return <h1>"Продукт не найдена, вернуться" <button onClick={clickNavigate}>назад</button></h1>
     } else if (goods.loadStatus === 'loaded') {
+        console.log(goods.data[0])
         return (
             <div className={css.ProductWrapper}>
                 <div className={css.ProductInfoWrapper}>

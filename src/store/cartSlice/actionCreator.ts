@@ -1,5 +1,5 @@
 import { CART_ACTIONS } from './constants'
-import { Cart } from './types'
+import { Cart, Product } from './types'
 import { Api } from '../../api'
 import { Dispatch } from 'react'
 
@@ -33,14 +33,14 @@ export const getFetchCart = () => async (dispatch: Dispatch<any>) => {
 
 
 
-export const putFetchCart = () => async (dispatch: Dispatch<any>) => {
+export const putFetchCart = (product: Product) => async (dispatch: Dispatch<any>) => {
     dispatch(putCart())
-    new Api().putDataCart().then(() => dispatch(putCartSuccess())).catch(() => dispatch(CartFailure()))
+    new Api().putDataCart(product).then(() => dispatch(putCartSuccess())).catch(() => dispatch(CartFailure()))
 }
 
 
 
-export const deleteFetchCart = () => async (dispatch: Dispatch<any>) => {
+export const deleteFetchCart = (product: Product) => async (dispatch: Dispatch<any>) => {
     dispatch(deleteCart())
-    new Api()
+    new Api().deleteDataCart(product).then(() => dispatch(deleteCartSuccess())).catch(() => dispatch(CartFailure()))
 }
