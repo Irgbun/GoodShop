@@ -13,8 +13,8 @@ export function App() {
       <Header />
       <Routes>
         <Route path="/" element={ <MainPage /> } />
-        <Route path="/:type/:id" element={ <ProductsPage /> } />
-        <Route path="/:type" element={ <CategoriesPage /> } />
+        <Route path="/product/:type/:id" element={ <ProductsPage /> } />
+        <Route path="/categories/:type" element={ <CategoriesPage /> } />
       </Routes>
       <Footer />
     </div>
