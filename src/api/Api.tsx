@@ -1,3 +1,6 @@
+import { CartSelectors } from '../store'
+import { useSelector } from 'react-redux'
+
 interface Goods {
     id: string,
     label: string,
@@ -15,28 +18,52 @@ interface Category {
 
 export class Api {
 
-    getDataGoods(id?: string): Promise<{ items: Goods[], total: number }> {
-        return fetch(`/api/good?categoryTypeId=${id}`).then((resp) => {
-            if (resp.ok) {
-                return resp.json()
-            }
-            throw new Error("Goods not working")
-        })
-    }
-
-    getDataCategory(): Promise<{  categories: Category[] }> {
-        return fetch('/api/categories').then((resp) => {
-            if (resp.ok) {
-                return resp.json()
-            }
-            throw new Error("List of categories not working")
-        })
-    }
-
-    getDataPopularCategory(id?: string): Promise<{ category: Category, items: Goods[] }[]> {
-        return fetch(`/api/popular_categories?id=${id}`).then((resp) => {
-            if (resp.ok) {
+    getDataGoods(id?: string, type?: string): Promise<{ items: Goods[], total: number }> {
+        if (type !== undefined && id !== undefined) {
+            return fetch(`/api/goods?ids=${id}`).then((resp) => {
                 console.log(resp)
+                if (resp.ok) {
+                    return resp.json()
+                }
+                throw new Error("Goods not working")
+            })
+        } else if(id !== undefined) {
+            return fetch(`/api/goods?categoryTypeIds=${id}`).then((resp) => {
+                if (resp.ok) {
+                    return resp.json()
+                }
+                throw new Error("Goods not working")
+            })
+        }
+            return fetch('/api/good').then((resp) => {
+                if (resp.ok) {
+                    return resp.json()
+                }
+                throw new Error("Goods not working")
+            })
+    }
+
+    getDataCategory(id?: string): Promise<{  categories: Category[] }> {
+        if(id !== undefined) {
+            return fetch(`/api/categories?ids=${id}`).then((resp) => {
+                if (resp.ok) {
+                    return resp.json()
+                }
+                throw new Error("List of categories not working")
+            })
+        }
+
+            return fetch('/api/categories').then((resp) => {
+                if (resp.ok) {
+                    return resp.json()
+                }
+                throw new Error("List of categories not working")
+            })
+    }
+
+    getDataPopularCategory(): Promise<{ category: Category, items: Goods[] }[]> {
+        return fetch('/api/popular_categories').then((resp) => {
+            if (resp.ok) {
                 return resp.json()
             }
             throw new Error("Popular categories not working")
@@ -53,9 +80,10 @@ export class Api {
     }
 
     putDataCart() {
+        const cartForPut = useSelector(CartSelectors.getCart)
         return fetch('/api/cart', {
             method: 'PUT',
-            body: "",
+            body: JSON.stringify(cartForPut),
         })
     }
 }
