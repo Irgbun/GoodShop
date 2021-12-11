@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { GoodsSelectors, GoodsActions } from "../../store";
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { Button } from 'antd'
 
 interface GoodsFind {
     categoryTypeId: string,
@@ -12,40 +13,54 @@ interface GoodsFind {
 export const ProductsPage = () => {
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(GoodsActions.fetchGoods)
-    }, [])
 
-    const goods = useSelector(GoodsSelectors.getGoods);
     const { type, id } = useParams()
     const navigate = useNavigate()
-    const good = goods.data.find((el: GoodsFind) => el.categoryTypeId === type && (el.id).toString() === id)
 
+    useEffect(() => {
+        dispatch(GoodsActions.fetchGoods(id, type))
+    }, [])
 
+    const addProdToCart = () => {
+
+    }
+
+    const goods = useSelector(GoodsSelectors.getGoods);
     const clickNavigate = () => {
         return navigate(-1)
     }
 
-    if (!good) {
+    if (!id || !type) {
         return <h1>"Продукт не найдена, вернуться" <button onClick={clickNavigate}>назад</button></h1>
+    } else if (goods.loadStatus === 'loaded') {
+        return (
+            <div className={css.ProductWrapper}>
+                <div className={css.ProductInfoWrapper}>
+                    <div>
+                        <img src={goods.data[0].img} alt="ProductPhoto" className={css.img} />
+                    </div>
+                    <div className={css.InfoWrapper}>
+                        <div className={css.label}>
+                            {goods?.data[0].label}
+                        </div>
+                        <div className={css.price}>
+                            {goods.data[0].price}
+                        </div>
+                        <div className={css.description}>
+                            {goods.data[0].description}
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <Button onClick={addProdToCart}> Добавить в корзину </Button>
+                </div>
+            </div>
+        )  
     }
 
     return (
-        <div className={css.ProductPageWrapper}>
-                                    <div>
-                                        <img src={good.img} alt="ProductPhoto" className={css.img} />
-                                    </div>
-                                    <div className={css.InfoWrapper}>
-                                        <div className={css.label}>
-                                            {good.label}
-                                        </div>
-                                        <div className={css.price}>
-                                            {good.price}
-                                        </div>
-                                        <div className={css.description}>
-                                            {good.description}
-                                        </div>
-                                    </div>
-                                </div>
+        <div>
+            Страница продукта загружается. Ожидайте.
+        </div>
     )
 }
