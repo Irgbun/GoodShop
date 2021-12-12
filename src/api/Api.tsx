@@ -74,6 +74,9 @@ export class Api {
                 return resp.json()
             }
             throw new Error("cart not working")
+        }).then((data) => {
+            const { carts } = data
+            return carts
         })
     }
 
@@ -83,11 +86,9 @@ export class Api {
             body: JSON.stringify(cartForPut),
         }).then((resp) => {
             if (resp.ok) {
-                console.log("Респ PUT запроса: ", resp)
                 return resp.json()
             }
         }).then((data) => {
-            console.log("Все получилось, мы получили данные назад с PUT запросом", data)
             return data
         })
     }
@@ -98,11 +99,9 @@ export class Api {
             body: JSON.stringify(cartForDelete),
         }).then((resp) => {
             if(resp.ok) {
-                console.log("Респ DELETE запроса", resp)
                 return resp.json()
             }
         }).then((data) => {
-            console.log("Все получилось, мы получили данные назад с DELETE запросом", data)
             return data
         })
     }

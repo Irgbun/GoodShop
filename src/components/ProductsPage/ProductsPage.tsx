@@ -25,18 +25,22 @@ export const ProductsPage = () => {
 
     const goods = useSelector(GoodsSelectors.getGoods);
     const cart = useSelector(CartSelectors.getCart)
+
     const good = goods.data[0]
 
     const isGoodInCart = () => {
         if(cart.data.length !== 0) {
-            cart.data.find((item) => {
+            const cartItem = cart.data.find((item) => {
                 if(item.id === good.id) {
                     return true
+                } else {
+                    return false
                 }
-                return false
             })
+            return cartItem
+        } else {
+            return false
         }
-        return false
     }
 
     const clickNavigate = () => {
