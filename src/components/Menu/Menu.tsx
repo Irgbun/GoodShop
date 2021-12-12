@@ -27,7 +27,7 @@ export const MenuCategories = () => {
           {categories.loadStatus === 'loaded' && categories.data.map((item: categpriesMap) => {
             return (
               <Menu.Item key={item.id}>
-                <Link to={`${item.type}`}> {item.label} </Link>
+                <Link to={`/categories/${item.id}`}> {item.label} </Link>
               </Menu.Item>
             )
           })}

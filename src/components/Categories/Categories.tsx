@@ -38,7 +38,6 @@ export const Categories = () => {
   }, [])
 
   const popularCategories = useSelector(PopularCategoriesSelextors.getPopularCategories);
-  console.log(popularCategories)
   return (
     <div>
       {popularCategories.data.map((el: popularCategoriesMap) => {
@@ -49,7 +48,6 @@ export const Categories = () => {
             </div>
             <Row>
               {el.items.map((item: popularCategoriesItemsMap) => {
-                console.log(item.categoryTypeId)
                 if ((el.category.id).toString() === item.categoryTypeId) {
                   return (
                     <Col span={6}>
