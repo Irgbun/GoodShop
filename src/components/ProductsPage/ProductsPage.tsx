@@ -5,10 +5,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Button } from 'antd'
 
-interface GoodsFind {
-    categoryTypeId: string,
-    id: string,
-}
 
 export const ProductsPage = () => {
     const dispatch = useDispatch()
@@ -18,29 +14,22 @@ export const ProductsPage = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        dispatch(GoodsActions.fetchGoods(id, type))
+        dispatch(GoodsActions.fetchGoods({ id, type }))
     }, [])
 
 
 
     const goods = useSelector(GoodsSelectors.getGoods);
+    const goodsStatus = useSelector(GoodsSelectors.getGoodsStatus)
     const cart = useSelector(CartSelectors.getCart)
 
-    const good = goods.data[0]
+    const good = goods[0]
 
     const isGoodInCart = () => {
-        if(cart.data.length !== 0) {
-            const cartItem = cart.data.find((item) => {
-                if(item.id === good.id) {
-                    return true
-                } else {
-                    return false
-                }
-            })
-            return cartItem
-        } else {
-            return false
-        }
+        const cartItem = cart.find((item) => {
+            return item.id === good.id
+        })
+        return cartItem
     }
 
     const clickNavigate = () => {
@@ -60,7 +49,7 @@ export const ProductsPage = () => {
 
     if (!id || !type) {
         return <h1>"Продукт не найдена, вернуться" <button onClick={clickNavigate}>назад</button></h1>
-    } else if (goods.loadStatus === 'loaded') {
+    } else if (goodsStatus === 'loaded') {
         return (
             <div className={css.ProductWrapper}>
                 <div className={css.ProductInfoWrapper}>
