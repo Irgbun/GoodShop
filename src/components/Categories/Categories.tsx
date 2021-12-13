@@ -40,7 +40,7 @@ export const Categories = () => {
   const popularCategories = useSelector(PopularCategoriesSelextors.getPopularCategories);
   return (
     <div>
-      {popularCategories.data.map((el: popularCategoriesMap) => {
+      {popularCategories.map((el: popularCategoriesMap) => {
         return (
           <div className={css.CatrgoriesWrapper}>
             <div className={css.CategoriesTitle}>
