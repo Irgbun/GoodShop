@@ -1,6 +1,6 @@
 
 
-interface Goods {
+interface Good {
     id: string,
     label: string,
     categoryTypeId: string,
@@ -15,9 +15,19 @@ interface Category {
     type: string,
 }
 
+interface GetDataGoods {
+    id?: string,
+    type?: string
+}
+
+interface GetDataCategory {
+    type?: string
+}
+
+
 export class Api {
 
-    getDataGoods(id?: string, type?: string): Promise<{ items: Goods[], total: number }> {
+    getDataGoods({ id, type }: GetDataGoods): Promise<{ items: Good[], total: number }> {
         if (type !== undefined && id !== undefined) {
             return fetch(`/api/goods?ids=${id}`).then((resp) => {
                 if (resp.ok) {
@@ -41,9 +51,9 @@ export class Api {
             })
     }
 
-    getDataCategory(id?: string): Promise<{  categories: Category[] }> {
-        if(id !== undefined) {
-            return fetch(`/api/categories?ids=${id}`).then((resp) => {
+    getDataCategory({ type }: GetDataCategory): Promise<{  categories: Category[] }> {
+        if(type !== undefined) {
+            return fetch(`/api/categories?ids=${type}`).then((resp) => {
                 if (resp.ok) {
                     return resp.json()
                 }
@@ -59,7 +69,7 @@ export class Api {
             })
     }
 
-    getDataPopularCategory(): Promise<{ category: Category, items: Goods[] }[]> {
+    getDataPopularCategory(): Promise<{ category: Category, items: Good[] }[]> {
         return fetch('/api/popular_categories').then((resp) => {
             if (resp.ok) {
                 return resp.json()
@@ -80,12 +90,13 @@ export class Api {
         })
     }
 
-    putDataCart(cartForPut: Goods) {
+    putDataCart(cartForPut: Good) {
         return fetch('/api/cart', {
             method: 'PUT',
             body: JSON.stringify(cartForPut),
         }).then((resp) => {
             if (resp.ok) {
+                console.log(resp)
                 return resp.json()
             }
         }).then((data) => {
@@ -93,7 +104,7 @@ export class Api {
         })
     }
 
-    deleteDataCart(cartForDelete: Goods) {
+    deleteDataCart(cartForDelete: Good) {
         return fetch('/api/cart', {
             method: 'DELETE',
             body: JSON.stringify(cartForDelete),
