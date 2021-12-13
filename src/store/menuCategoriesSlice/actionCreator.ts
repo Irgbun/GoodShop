@@ -1,5 +1,5 @@
 import { MENU_CATEGORIES_ACTIONS } from './constants'
-import { MenuCategories } from './types'
+import { MenuCategories, GetDataCategory } from './types'
 import { Api } from '../../api'
 import { Dispatch } from 'react'
 
@@ -14,9 +14,9 @@ export const getMenuCategoriesFailure = () => ({ type: MENU_CATEGORIES_ACTIONS.G
 
 
 
-export const fetchMenuCategories = (id?: string) => async(dispatch: Dispatch<any>) => {
+export const fetchMenuCategories = ({ type }: GetDataCategory) => async(dispatch: Dispatch<any>) => {
     dispatch(getMenuCategories())
-    new Api().getDataCategory(id).then((data) => dispatch(getMenuCategoriesSuccess(data.categories))).catch(() => dispatch(getMenuCategoriesFailure()))
+    new Api().getDataCategory({ type }).then((data) => dispatch(getMenuCategoriesSuccess(data.categories))).catch(() => dispatch(getMenuCategoriesFailure()))
 }
 
 

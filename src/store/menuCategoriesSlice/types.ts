@@ -10,3 +10,7 @@ export interface State {
     loadStatus: LOAD_STATUSES,
     data: MenuCategories[]
 }
+
+export interface GetDataCategory {
+    type?: string
+}
