@@ -32,7 +32,7 @@ export const Header = () => {
                 <Input />
             </div>
             <div>   
-                <Badge count={cart.data.length !== 0 ? cart.data.length : null} className={css.HeaderBadge} >
+                <Badge count={cart.length !== 0 ? cart.length : null} className={css.HeaderBadge} >
                     <button onClick={cartOnClick} className={css.HeaderButtonCart}>
                         <img src={cartImg} alt={"Cart"} className={css.HeaderCartImg} />
                     </button>

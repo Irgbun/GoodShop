@@ -7,7 +7,7 @@ import { Row, Col } from 'antd'
 import { useEffect } from 'react';
 
 
-interface goodsMap {
+interface GoodsMap {
     label: string,
     price: number,
     img: string,
@@ -23,8 +23,8 @@ export const CategoriesPage = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-      dispatch(MenuCategoriesActions.fetchMenuCategories(type))
-      dispatch(GoodsActions.fetchGoods(type))
+      dispatch(MenuCategoriesActions.fetchMenuCategories({ type }))
+      dispatch(GoodsActions.fetchGoods({ type }))
     }, [])
 
     const categories = useSelector(MenuCategoriesSelectors.getCategories);
@@ -45,10 +45,10 @@ export const CategoriesPage = () => {
       <div>
         <div className={css.CategoriesWrapper}>
           <div className={css.CategoriesTitle}>
-            {categories.data[0].label}
+            {categories[0].label}
           </div>
           <Row>
-            {goods.data.map((item: goodsMap) => {
+            {goods.map((item: GoodsMap) => {
               return (
                 <Col span={6}>
                   <CardProducts label={item.label} price={item.price} img={item.img} type={item.categoryTypeId} id={item.id} />

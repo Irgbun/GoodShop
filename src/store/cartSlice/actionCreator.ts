@@ -37,8 +37,7 @@ export const putFetchCart = (product: Product) => async (dispatch: Dispatch<any>
     dispatch(putCart())
     new Api().putDataCart(product)
     .then(() => dispatch(putCartSuccess()))
-    .then(() => dispatch(getCart()))
-    .then(() => new Api().getDataCart().then((data) => dispatch(getCartSuccess(data))))
+    .then(() => dispatch(getFetchCart()))
     .catch(() => dispatch(CartFailure()))
 }
 
@@ -48,7 +47,6 @@ export const deleteFetchCart = (product: Product) => async (dispatch: Dispatch<a
     dispatch(deleteCart())
     new Api().deleteDataCart(product)
     .then(() => dispatch(deleteCartSuccess()))
-    .then(() => dispatch(getCart()))
-    .then(() => new Api().getDataCart().then((data) => dispatch(getCartSuccess(data))))
+    .then(() => dispatch(getFetchCart()))
     .catch(() => dispatch(CartFailure()))
 }

@@ -13,3 +13,8 @@ export interface State {
     loadStatus: LOAD_STATUSES,
     data: Goods[]
 }
+
+export interface GetDataGoods {
+    id?: string,
+    type?: string
+}

@@ -14,17 +14,18 @@ export const MenuCategories = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(MenuCategoriesActions.fetchMenuCategories())
+    dispatch(MenuCategoriesActions.fetchMenuCategories({}))
   }, [])
 
   const categories = useSelector(MenuCategoriesSelectors.getCategories);
+  const status = useSelector(MenuCategoriesSelectors.getCategoriesStatus)
   return (
     <Row>
       <Col span={6}>
         <Menu mode="vertical">
-          {categories.loadStatus === 'failure' && 'Something went wrong'}
-          {categories.loadStatus === 'loading' && 'Loading list'}
-          {categories.loadStatus === 'loaded' && categories.data.map((item: categpriesMap) => {
+          {status === 'failure' && 'Something went wrong'}
+          {status === 'loading' && 'Loading list'}
+          {status === 'loaded' && categories.map((item: categpriesMap) => {
             return (
               <Menu.Item key={item.id}>
                 <Link to={`/categories/${item.id}`}> {item.label} </Link>

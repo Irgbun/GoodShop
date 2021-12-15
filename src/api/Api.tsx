@@ -1,6 +1,6 @@
 
 
-interface Goods {
+interface Good {
     id: string,
     label: string,
     categoryTypeId: string,
@@ -15,51 +15,41 @@ interface Category {
     type: string,
 }
 
+interface GetDataGoods {
+    id?: string,
+    type?: string
+}
+
+interface GetDataCategory {
+    type?: string
+}
+
+
 export class Api {
 
-    getDataGoods(id?: string, type?: string): Promise<{ items: Goods[], total: number }> {
-        if (type !== undefined && id !== undefined) {
-            return fetch(`/api/goods?ids=${id}`).then((resp) => {
-                if (resp.ok) {
-                    return resp.json()
-                }
-                throw new Error("Goods not working")
-            })
-        } else if(id !== undefined) {
-            return fetch(`/api/goods?categoryTypeIds=${id}`).then((resp) => {
-                if (resp.ok) {
-                    return resp.json()
-                }
-                throw new Error("Goods not working")
-            })
-        }
-            return fetch('/api/good').then((resp) => {
-                if (resp.ok) {
-                    return resp.json()
-                }
-                throw new Error("Goods not working")
-            })
+    getDataGoods({ id, type }: GetDataGoods): Promise<{ items: Good[], total: number }> {
+        const params = JSON.parse(JSON.stringify({type}))
+        const param = new URLSearchParams(params).toString()
+        return fetch(`/api/goods?${param}`).then((resp) => {
+            if (resp.ok) {
+                return resp.json()
+            }
+            throw new Error("Goods not working")
+        })
     }
 
-    getDataCategory(id?: string): Promise<{  categories: Category[] }> {
-        if(id !== undefined) {
-            return fetch(`/api/categories?ids=${id}`).then((resp) => {
-                if (resp.ok) {
-                    return resp.json()
-                }
-                throw new Error("List of categories not working")
-            })
-        }
-
-            return fetch('/api/categories').then((resp) => {
-                if (resp.ok) {
-                    return resp.json()
-                }
-                throw new Error("List of categories not working")
-            })
+    getDataCategory({ type }: GetDataCategory): Promise<{  categories: Category[] }> {
+        const params = JSON.parse(JSON.stringify({type}))
+        const param = new URLSearchParams(params).toString()
+        return fetch(`/api/categories?${param}`).then((resp) => {
+            if (resp.ok) {
+                return resp.json()
+            }
+            throw new Error("List of categories not working")
+        })
     }
 
-    getDataPopularCategory(): Promise<{ category: Category, items: Goods[] }[]> {
+    getDataPopularCategory(): Promise<{ category: Category, items: Good[] }[]> {
         return fetch('/api/popular_categories').then((resp) => {
             if (resp.ok) {
                 return resp.json()
@@ -80,12 +70,13 @@ export class Api {
         })
     }
 
-    putDataCart(cartForPut: Goods) {
+    putDataCart(cartForPut: Good) {
         return fetch('/api/cart', {
             method: 'PUT',
             body: JSON.stringify(cartForPut),
         }).then((resp) => {
             if (resp.ok) {
+                console.log(resp)
                 return resp.json()
             }
         }).then((data) => {
@@ -93,7 +84,7 @@ export class Api {
         })
     }
 
-    deleteDataCart(cartForDelete: Goods) {
+    deleteDataCart(cartForDelete: Good) {
         return fetch('/api/cart', {
             method: 'DELETE',
             body: JSON.stringify(cartForDelete),
