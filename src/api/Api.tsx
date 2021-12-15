@@ -28,45 +28,25 @@ interface GetDataCategory {
 export class Api {
 
     getDataGoods({ id, type }: GetDataGoods): Promise<{ items: Good[], total: number }> {
-        if (type !== undefined && id !== undefined) {
-            return fetch(`/api/goods?ids=${id}`).then((resp) => {
-                if (resp.ok) {
-                    return resp.json()
-                }
-                throw new Error("Goods not working")
-            })
-        } else if(id !== undefined) {
-            return fetch(`/api/goods?categoryTypeIds=${id}`).then((resp) => {
-                if (resp.ok) {
-                    return resp.json()
-                }
-                throw new Error("Goods not working")
-            })
-        }
-            return fetch('/api/good').then((resp) => {
-                if (resp.ok) {
-                    return resp.json()
-                }
-                throw new Error("Goods not working")
-            })
+        const params = JSON.parse(JSON.stringify({type}))
+        const param = new URLSearchParams(params).toString()
+        return fetch(`/api/goods?${param}`).then((resp) => {
+            if (resp.ok) {
+                return resp.json()
+            }
+            throw new Error("Goods not working")
+        })
     }
 
     getDataCategory({ type }: GetDataCategory): Promise<{  categories: Category[] }> {
-        if(type !== undefined) {
-            return fetch(`/api/categories?ids=${type}`).then((resp) => {
-                if (resp.ok) {
-                    return resp.json()
-                }
-                throw new Error("List of categories not working")
-            })
-        }
-
-            return fetch('/api/categories').then((resp) => {
-                if (resp.ok) {
-                    return resp.json()
-                }
-                throw new Error("List of categories not working")
-            })
+        const params = JSON.parse(JSON.stringify({type}))
+        const param = new URLSearchParams(params).toString()
+        return fetch(`/api/categories?${param}`).then((resp) => {
+            if (resp.ok) {
+                return resp.json()
+            }
+            throw new Error("List of categories not working")
+        })
     }
 
     getDataPopularCategory(): Promise<{ category: Category, items: Good[] }[]> {
