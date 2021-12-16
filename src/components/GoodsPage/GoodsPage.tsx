@@ -1,7 +1,8 @@
-import { Table } from 'antd'
+import { Table, Select, Slider, Input } from 'antd'
 import { useSelector, useDispatch } from "react-redux";
 import { GoodsSelectors, GoodsActions } from "../../store";
 import { useEffect } from 'react';
+import debounce from 'lodash'
 
 export const GoodsPage = () => {
     const dispatch = useDispatch()
@@ -12,21 +13,43 @@ export const GoodsPage = () => {
 
     const goods = useSelector(GoodsSelectors.getGoods);
     const { Column } = Table
+    //const { Option } = Select
+
+    const InputOnChange = (event) => {
+        
+    }
 
 
     return (
-        <Table dataSource={goods}>
-            <Column 
-                title="Название" 
-                dataIndex="label" 
-                key="label"
-                />
-            <Column 
-                title="Цена" 
-                dataIndex="price" 
-                key="price"
-                />
-        </Table>
+        <div>
+            <div>
+                <Input value={""} style={{ width: '200px' }} placeholder='Напиши категорию' />
+                <Slider range defaultValue={[0, 1000]} max={1000} style={{ width: '200px' }} />
+                <Select
+                mode="multiple"
+                allowClear
+                style={{ width: '200px' }}
+                placeholder="Выберите категорию"
+                >
+                    {}
+                </Select>
+            </div>
+            <div>
+                <Table dataSource={goods}>
+                    <Column 
+                        title="Название" 
+                        dataIndex="label" 
+                        key="label"
+                        />
+                    <Column 
+                        title="Цена" 
+                        dataIndex="price" 
+                        key="price"
+                        />
+                </Table>
+            </div>
+        </div>
+
     )
 }
 
