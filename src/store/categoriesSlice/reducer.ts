@@ -1,4 +1,4 @@
-import { MENU_CATEGORIES_ACTIONS, LOAD_STATUSES } from './constants'
+import { CATEGORIES_ACTIONS, LOAD_STATUSES } from './constants'
 import { Action } from "redux";
 import { State } from './types'
 
@@ -9,23 +9,23 @@ const INITIAL_STATE: State = {
     data: []
 }
 
-export function menuCategoriesReducer(state = INITIAL_STATE, action: Action<MENU_CATEGORIES_ACTIONS>) {
+export function categoriesReducer(state = INITIAL_STATE, action: Action<CATEGORIES_ACTIONS>) {
     switch(action.type) {
-        case MENU_CATEGORIES_ACTIONS.GET_MENU_CATEGORIES:
+        case CATEGORIES_ACTIONS.GET_CATEGORIES:
             return {    
                 ...state,
                 loadStatus: LOAD_STATUSES.LOADING
             }
-        case MENU_CATEGORIES_ACTIONS.GET_MENU_CATEGORIES_SUCCESS:
+        case CATEGORIES_ACTIONS.GET_CATEGORIES_SUCCESS:
             const { payload } = action as {
-                type: MENU_CATEGORIES_ACTIONS.GET_MENU_CATEGORIES_SUCCESS,
+                type: CATEGORIES_ACTIONS.GET_CATEGORIES_SUCCESS,
                 payload: State['data']
             }
             return {
                 data: payload,
                 loadStatus: LOAD_STATUSES.LOADED
             }
-        case MENU_CATEGORIES_ACTIONS.GET_MENU_CATEGORIES_FAILURE:
+        case CATEGORIES_ACTIONS.GET_CATEGORIES_FAILURE:
             return {
                 ...state,
                 loadStatus: LOAD_STATUSES.FAILURE
