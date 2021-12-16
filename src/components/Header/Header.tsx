@@ -6,7 +6,6 @@ import { CartSelectors, CartActions } from "../../store";
 import css from './Header.module.css'
 import cartImg from './cart.jpg'
 import LogotipeImg from './headerLogotipe.png'
-import { GoodsPage } from '../GoodsPage'
 
 
 export const Header = () => {
