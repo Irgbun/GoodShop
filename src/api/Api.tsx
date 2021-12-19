@@ -17,7 +17,8 @@ interface Category {
 
 interface GetDataGoods {
     id?: string,
-    type?: string
+    type?: string,
+    text?: string
 }
 
 interface GetDataCategory {
@@ -27,8 +28,8 @@ interface GetDataCategory {
 
 export class Api {
 
-    getDataGoods({ id, type }: GetDataGoods): Promise<{ items: Good[], total: number }> {
-        const params = JSON.parse(JSON.stringify({type}))
+    getDataGoods({ id, type, text }: GetDataGoods): Promise<{ items: Good[], total: number }> {
+        const params = JSON.parse(JSON.stringify({categoryTypeIds: type, ids: id, text}))
         const param = new URLSearchParams(params).toString()
         return fetch(`/api/goods?${param}`).then((resp) => {
             if (resp.ok) {
@@ -39,7 +40,7 @@ export class Api {
     }
 
     getDataCategory({ type }: GetDataCategory): Promise<{  categories: Category[] }> {
-        const params = JSON.parse(JSON.stringify({type}))
+        const params = JSON.parse(JSON.stringify({ids: type}))
         const param = new URLSearchParams(params).toString()
         return fetch(`/api/categories?${param}`).then((resp) => {
             if (resp.ok) {
@@ -64,9 +65,6 @@ export class Api {
                 return resp.json()
             }
             throw new Error("cart not working")
-        }).then((data) => {
-            const { carts } = data
-            return carts
         })
     }
 
