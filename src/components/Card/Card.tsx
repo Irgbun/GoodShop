@@ -12,7 +12,7 @@ interface CardProdectsProps {
 
 export const CardProducts: React.FC<CardProdectsProps> = ({ label, price, img, type, id }) => {
   return (
-    <Link to={`/product/${id}/${id}`}>
+    <Link to={`/product/${type}/${id}`}>
       <Card hoverable cover={<img src={img} alt="ProductPhoto" className={css.img} />} >
         <h3>{label}</h3>
         <h2>{price}</h2>

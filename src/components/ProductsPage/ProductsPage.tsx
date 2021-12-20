@@ -14,7 +14,7 @@ export const ProductsPage = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        dispatch(GoodsActions.fetchGoods({ id, type }))
+        dispatch(GoodsActions.fetchGoods({ id }))
     }, [])
 
 

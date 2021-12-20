@@ -1,6 +1,6 @@
 import css from './CategoriesPage.module.css'
 import { useSelector, useDispatch } from "react-redux";
-import { MenuCategoriesSelectors, GoodsSelectors, MenuCategoriesActions, GoodsActions } from "../../store";
+import { CategoriesSelectors, GoodsSelectors, CategoriesActions, GoodsActions } from "../../store";
 import { useParams, useNavigate } from 'react-router-dom';
 import { CardProducts } from "../Card";
 import { Row, Col } from 'antd'
@@ -23,11 +23,11 @@ export const CategoriesPage = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-      dispatch(MenuCategoriesActions.fetchMenuCategories({ type }))
+      dispatch(CategoriesActions.fetchCategories({ type }))
       dispatch(GoodsActions.fetchGoods({ type }))
     }, [])
 
-    const categories = useSelector(MenuCategoriesSelectors.getCategories);
+    const categories = useSelector(CategoriesSelectors.getCategories);
     const goods = useSelector(GoodsSelectors.getGoods)
     
 

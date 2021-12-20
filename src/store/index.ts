@@ -3,12 +3,12 @@ export { store } from './store'
 
 
 export { CartSelectors } from './cartSlice'
-export { MenuCategoriesSelectors } from './menuCategoriesSlice'
+export { CategoriesSelectors } from './categoriesSlice'
 export { PopularCategoriesSelextors } from './popularCategoriesSlice'
 export { GoodsSelectors } from './goodsSlice'
 
 
-export { MenuCategoriesActions } from './menuCategoriesSlice'
+export { CategoriesActions } from './categoriesSlice'
 export { CartActions } from './cartSlice'
 export { PopularCategoriesActions } from './popularCategoriesSlice'
 export { GoodsActions } from './goodsSlice'

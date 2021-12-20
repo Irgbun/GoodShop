@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
-import { MenuCategoriesSelectors, MenuCategoriesActions } from "../../store";
+import { CategoriesSelectors, CategoriesActions } from "../../store";
 import { Link } from "react-router-dom";
 import { Menu, Row, Col } from "antd";
 
@@ -14,11 +14,11 @@ export const MenuCategories = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(MenuCategoriesActions.fetchMenuCategories({}))
+    dispatch(CategoriesActions.fetchCategories({}))
   }, [])
 
-  const categories = useSelector(MenuCategoriesSelectors.getCategories);
-  const status = useSelector(MenuCategoriesSelectors.getCategoriesStatus)
+  const categories = useSelector(CategoriesSelectors.getCategories);
+  const status = useSelector(CategoriesSelectors.getCategoriesStatus)
   return (
     <Row>
       <Col span={6}>
