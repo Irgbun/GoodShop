@@ -1,5 +1,5 @@
 import css from './GoodsPage.module.css'
-import { Table, Select, Slider, Input } from 'antd'
+import { Table, Select, Slider, Input, Pagination } from 'antd'
 import { useSelector, useDispatch } from "react-redux";
 import { GoodsSelectors, GoodsActions, CategoriesSelectors, CategoriesActions } from "../../store";
 import { useEffect, useState, useCallback } from 'react';
@@ -15,12 +15,17 @@ export const GoodsPage = () => {
     const [ inputValue, setInputValue ] = useState("")
     const [ sliderValue, setSliderValue ] = useState<number[]>([])
     const [ selectValue, setSelectValue ] = useState<string[]>()
+    const [ paginationPageSize, setPaginationPageSize ] = useState<number>(20)
+    const [ paginationTotal ] = useState<number>(220)
+
     const dispatch = useDispatch()
+
     const { Option } = Select
+
     const optionCategories: any = []
 
     useEffect(() => {
-        dispatch(GoodsActions.fetchGoods({}))
+        dispatch(GoodsActions.fetchGoods({ limit: 20, offset: 220 }))
         dispatch(CategoriesActions.fetchCategories({}))
     }, [])
 
@@ -28,6 +33,7 @@ export const GoodsPage = () => {
 
     const goods = useSelector(GoodsSelectors.getGoodsWithCategory);
     const goodsStatus = useSelector(GoodsSelectors.getGoodsStatus)
+    const total = useSelector(GoodsSelectors.getGoodsTotal)
     const categories = useSelector(CategoriesSelectors.getCategories)
 
     categories.map((item) => {
@@ -39,13 +45,13 @@ export const GoodsPage = () => {
         setInputValue(newValue)
     }
 
-    const debounceDispatch = useCallback(debounce(( text, minPrice, maxPrice, type) => {
+    const debounceDispatch = useCallback(debounce(( text, minPrice, maxPrice, type, limit, offset?) => {
         dispatch(GoodsActions.fetchGoods({type, text, minPrice, maxPrice}))
     }, 1500), [])
 
     useEffect(() => {
-        debounceDispatch(inputValue, sliderValue[0], sliderValue[1], selectValue)
-    }, [inputValue, sliderValue, selectValue])
+        debounceDispatch(inputValue, sliderValue[0], sliderValue[1], selectValue, paginationPageSize, total)
+    }, [inputValue, sliderValue, selectValue, paginationPageSize, total])
 
     const sliderOnChange = (value: [number, number]) => {
         setSliderValue(value)
@@ -53,6 +59,10 @@ export const GoodsPage = () => {
 
     const selectOnChange = (value: string[]) => {
         setSelectValue(value)
+    }
+
+    const paginationOnChange = (page: number, pageSize: number) => {
+        setPaginationPageSize(pageSize)
     }
 
     return (
@@ -76,7 +86,18 @@ export const GoodsPage = () => {
             {goodsStatus === 'loading' && <Loader />}
             {goodsStatus === 'loaded' && (
                 <div>
-                    <Table dataSource={goods} columns={columnsName} pagination={false} onRow={(record, rowIndex) => {
+                    <Table 
+                    dataSource={goods} 
+                    columns={columnsName} 
+                    pagination={{
+                        defaultCurrent: 1,
+                        defaultPageSize: paginationPageSize, 
+                        pageSize: 20,
+                        pageSizeOptions: ['10', '20', '60', '100'],
+                        total: paginationTotal,
+                        onChange: paginationOnChange
+                    }}
+                    onRow={(record) => {
                         return {
                             onClick: () => {
                                 navigate(`/product/${record.categoryTypeId}/${record.id}`)
