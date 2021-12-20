@@ -17,5 +17,7 @@ export interface State {
 export interface GetDataGoods {
     id?: string,
     type?: string,
-    text?: string
+    text?: string,
+    minPrice?: number,
+    maxPrice?: number,
 }
