@@ -2,17 +2,19 @@ import css from './GoodsPage.module.css'
 import { Table, Select, Slider, Input } from 'antd'
 import { useSelector, useDispatch } from "react-redux";
 import { GoodsSelectors, GoodsActions, CategoriesSelectors, CategoriesActions } from "../../store";
-import { useEffect, useState } from 'react';
-import { debounce, values } from 'lodash'
+import { useEffect, useState, useCallback } from 'react';
+import { debounce } from 'lodash'
 import { columnsName } from './constants'
 import { useNavigate } from 'react-router-dom';
+import { Loader } from '../Loader'
 
 
 
 export const GoodsPage = () => {
 
     const [ inputValue, setInputValue ] = useState("")
-    const [ sliderValue, setSliderValue ] = useState()
+    const [ sliderValue, setSliderValue ] = useState<number[]>([])
+    const [ selectValue, setSelectValue ] = useState<string[]>()
     const dispatch = useDispatch()
     const { Option } = Select
     const optionCategories: any = []
@@ -25,6 +27,7 @@ export const GoodsPage = () => {
     const navigate = useNavigate()
 
     const goods = useSelector(GoodsSelectors.getGoodsWithCategory);
+    const goodsStatus = useSelector(GoodsSelectors.getGoodsStatus)
     const categories = useSelector(CategoriesSelectors.getCategories)
 
     categories.map((item) => {
@@ -36,16 +39,20 @@ export const GoodsPage = () => {
         setInputValue(newValue)
     }
 
-    const inputOnChangeDebounce = debounce((text) => {
-        dispatch(GoodsActions.fetchGoods({text}))
-    }, 1500)
+    const debounceDispatch = useCallback(debounce(( text, minPrice, maxPrice, type) => {
+        dispatch(GoodsActions.fetchGoods({type, text, minPrice, maxPrice}))
+    }, 1500), [])
 
     useEffect(() => {
-        inputOnChangeDebounce(inputValue)
-    }, [inputValue])
+        debounceDispatch(inputValue, sliderValue[0], sliderValue[1], selectValue)
+    }, [inputValue, sliderValue, selectValue])
 
     const sliderOnChange = (value: [number, number]) => {
         setSliderValue(value)
+    }
+
+    const selectOnChange = (value: string[]) => {
+        setSelectValue(value)
     }
 
     return (
@@ -54,27 +61,30 @@ export const GoodsPage = () => {
                 <Input value={inputValue} style={{ width: '200px' }} placeholder='Поиск по товарам' onChange={inputOnChange} />
                 <div>
                     Цена:
-                    <Slider range value={sliderValue} defaultValue={[0, 1000]} max={1000} style={{ width: '200px' }} onChange={sliderOnChange} />
+                    <Slider range defaultValue={[0, 1000]} max={1000} style={{ width: '200px' }} onChange={sliderOnChange} />
                 </div>
                 <Select
                 mode="multiple"
                 allowClear
                 style={{ width: '200px' }}
                 placeholder="Выберите категорию"
+                onChange={selectOnChange}
                 >
                     {optionCategories}
                 </Select>
             </div>
-            <div>
-                <Table dataSource={goods} columns={columnsName} pagination={false} onRow={(record, rowIndex) => {
-                    return {
-                        onClick: () => {
-                            navigate(`/product/${record.categoryTypeId}/${record.id}`)
+            {goodsStatus === 'loading' && <Loader />}
+            {goodsStatus === 'loaded' && (
+                <div>
+                    <Table dataSource={goods} columns={columnsName} pagination={false} onRow={(record, rowIndex) => {
+                        return {
+                            onClick: () => {
+                                navigate(`/product/${record.categoryTypeId}/${record.id}`)
+                            }
                         }
-                    }
-                }} />
-            </div>
+                    }} />
+                </div>
+            )}
         </div>
-
     )
 }
