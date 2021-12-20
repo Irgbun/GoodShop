@@ -9,9 +9,14 @@ export interface Goods {
     description: string
 }
 
+export interface GoodsWithTotal {
+    items: Goods[],
+    total: number
+}
+
 export interface State {
     loadStatus: LOAD_STATUSES,
-    data: Goods[]
+    data: GoodsWithTotal
 }
 
 export interface GetDataGoods {
@@ -20,4 +25,6 @@ export interface GetDataGoods {
     text?: string,
     minPrice?: number,
     maxPrice?: number,
+    limit?: number,
+    offset?: number
 }

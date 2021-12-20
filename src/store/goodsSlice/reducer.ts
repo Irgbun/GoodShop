@@ -5,7 +5,10 @@ import { State } from './types'
 
 const INITIAL_STATE: State = {
     loadStatus: LOAD_STATUSES.UNKNOWN,
-    data: []
+    data: {
+        items: [],
+        total: 0
+    }
 }
 
 export function goodsReducer(state = INITIAL_STATE, action: Action<GOODS_ACTIONS>) {
