@@ -20,7 +20,9 @@ interface GetDataGoods {
     type?: string,
     text?: string,
     minPrice?: number,
-    maxPrice?: number 
+    maxPrice?: number,
+    limit?: number,
+    offset?: number 
 }
 
 interface GetDataCategory {
@@ -30,8 +32,9 @@ interface GetDataCategory {
 
 export class Api {
 
-    getDataGoods({ id, type, text, minPrice, maxPrice }: GetDataGoods): Promise<{ items: Good[], total: number }> {
-        const params = JSON.parse(JSON.stringify({categoryTypeIds: type, ids: id, text, minPrice, maxPrice}))
+    getDataGoods({ id, type, text, minPrice, maxPrice, limit, offset }: GetDataGoods): Promise<{ items: Good[], total: number }> {
+        let o = Object.fromEntries(Object.entries({ id, type, text, minPrice, maxPrice, limit, offset }).filter(([_, v]) => v != undefined && v != ""))
+        const params = JSON.parse(JSON.stringify(o))
         const param = new URLSearchParams(params).toString()
         return fetch(`/api/goods?${param}`).then((resp) => {
             if (resp.ok) {
