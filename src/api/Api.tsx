@@ -18,7 +18,9 @@ interface Category {
 interface GetDataGoods {
     id?: string,
     type?: string,
-    text?: string
+    text?: string,
+    minPrice?: number,
+    maxPrice?: number 
 }
 
 interface GetDataCategory {
@@ -28,8 +30,8 @@ interface GetDataCategory {
 
 export class Api {
 
-    getDataGoods({ id, type, text }: GetDataGoods): Promise<{ items: Good[], total: number }> {
-        const params = JSON.parse(JSON.stringify({categoryTypeIds: type, ids: id, text}))
+    getDataGoods({ id, type, text, minPrice, maxPrice }: GetDataGoods): Promise<{ items: Good[], total: number }> {
+        const params = JSON.parse(JSON.stringify({categoryTypeIds: type, ids: id, text, minPrice, maxPrice}))
         const param = new URLSearchParams(params).toString()
         return fetch(`/api/goods?${param}`).then((resp) => {
             if (resp.ok) {
