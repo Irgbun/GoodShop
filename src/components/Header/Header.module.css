@@ -34,3 +34,14 @@
     width: 110px;
     height: 60px;
 }
+
+.DropdownMenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.DropdownMenu img {
+    width: 50px;
+    height: 50px;
+}
