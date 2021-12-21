@@ -8,10 +8,14 @@ export const getGoodsTotal = (state: RootState) => state.goods.data.total
 
 export const getGoodsWithCategory = createSelector(
     [getGoods, CategoriesSelectors.getCategories], (goods, categories) => {
-        const newGoods = goods.map((good) => ({
-            ...good,
-            category: categories.find((category) => category.id === good.categoryTypeId)?.type
-        }))
-        return newGoods
+        if(goods === []) {
+            return []
+        } else {
+            const newGoods = goods.map((good) => ({
+                ...good,
+                category: categories.find((category) => category.id === good.categoryTypeId)?.type
+            }))
+            return newGoods
+        }
     }
 )
