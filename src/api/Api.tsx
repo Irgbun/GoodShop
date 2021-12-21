@@ -33,7 +33,7 @@ interface GetDataCategory {
 export class Api {
 
     getDataGoods({ id, type, text, minPrice, maxPrice, limit, offset }: GetDataGoods): Promise<{ items: Good[], total: number }> {
-        let o = Object.fromEntries(Object.entries({ id, type, text, minPrice, maxPrice, limit, offset }).filter(([_, v]) => v != undefined && v != ""))
+        let o = Object.fromEntries(Object.entries({ id, type, text, minPrice, maxPrice, limit, offset }).filter(([_, v]) => v !== undefined && v !== ""))
         const params = JSON.parse(JSON.stringify(o))
         const param = new URLSearchParams(params).toString()
         return fetch(`/api/goods?${param}`).then((resp) => {
