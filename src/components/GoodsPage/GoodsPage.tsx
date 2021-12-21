@@ -6,7 +6,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { debounce, values } from 'lodash'
 import { columnsName } from './constants'
 import { useNavigate } from 'react-router-dom';
-import { Loader } from '../Loader'
+import Loader from 'react-loader-spinner'
 
 interface State {
     text?: string,
@@ -105,7 +105,7 @@ export const GoodsPage = () => {
                     {optionCategories}
                 </Select>
             </div>
-            {goodsStatus === 'loading' && <Loader />}
+            {goodsStatus === 'loading' && <Loader type='Puff' color='#0fb' height={200} width={200} />}
             {goodsStatus === 'loaded' && (
                 <div>
                     <Table 
