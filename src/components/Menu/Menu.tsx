@@ -21,7 +21,7 @@ export const MenuCategories = () => {
   const status = useSelector(CategoriesSelectors.getCategoriesStatus)
   return (
     <Row>
-      <Col span={6}>
+      <Col span={8}>
         <Menu mode="vertical">
           {status === 'failure' && 'Something went wrong'}
           {status === 'loading' && 'Loading list'}
