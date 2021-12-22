@@ -1,6 +1,6 @@
 
 
-interface Good {
+export interface Good {
     id: string,
     label: string,
     categoryTypeId: string,
