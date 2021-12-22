@@ -1,123 +1,100 @@
 import css from './GoodsPage.module.css'
-import { Table, Select, Slider, Input, Pagination } from 'antd'
+import { Table, Select, Slider, Input } from 'antd'
 import { useSelector, useDispatch } from "react-redux";
-import { GoodsSelectors, GoodsActions, CategoriesSelectors, CategoriesActions } from "../../store";
+import { GoodsSelectors, GoodsActions, CategoriesSelectors, CategoriesActions, LOAD_STATUSES } from "../../store";
 import { useEffect, useState, useCallback } from 'react';
-import { debounce, values } from 'lodash'
-import { columnsName } from './constants'
+import { debounce } from 'lodash'
+import { columnsName, Filters, INITIAL_FILTERS } from './constants'
 import { useNavigate } from 'react-router-dom';
-import Loader from 'react-loader-spinner'
-
-interface State {
-    text?: string,
-    minPrice?: number,
-    maxPrice?: number,
-    category?: string[],
-    limit?: number,
-    offset?: number
-}
-
-interface DebounceFunction {
-    text?: string,
-    minPrice?: number,
-    maxPrice?: number,
-    category?: string[],
-    limit?: number,
-    offset?: number
-}
 
 export const GoodsPage = () => {
-
-    const [ vaLue, setVaLue ] = useState<State>({ text: "", minPrice: 0, maxPrice: 1000, category: [], limit: 20, offset: 220 })
-
-    const [ inputValue, setInputValue ] = useState("")
-    const [ sliderValue, setSliderValue ] = useState<number[]>([])
-    const [ selectValue, setSelectValue ] = useState<string[]>()
-    const [ paginationPageSize, setPaginationPageSize ] = useState<number>(20)
-    const [ paginationTotal ] = useState<number>(220)
-
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const { Option } = Select
+    const [ filters, setFilters ] = useState<Filters>(INITIAL_FILTERS)
 
-    const optionCategories: any = []
+    const updateFilters = (nextFilters: Partial<Filters>) => {
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            ...nextFilters
+        }))
+    }
 
-    const debounceDispatch = useCallback(debounce(( {text, minPrice, maxPrice, category, limit, offset}: DebounceFunction) => {
-        dispatch(GoodsActions.fetchGoods({type: category, text, minPrice, maxPrice, limit, offset}))
-    }, 1500), [])
+    const paginationHandler = (page = 1, limit = INITIAL_FILTERS.limit) => {
+        updateFilters({ limit, offset: (page - 1) * limit })
+    }
+
+    const goods = useSelector(GoodsSelectors.getGoodsWithCategory);
+    const totalGoods = useSelector(GoodsSelectors.getGoodsTotal)
+    const goodsLoadStatus = useSelector(GoodsSelectors.getGoodsStatus)
+    const categories = useSelector(CategoriesSelectors.getCategories)
+
+    const categoriesOptions = categories.map(({ id, label }) => ({
+        value: id,
+        label
+    }))
+
+    const getGoods = (filters: Filters) => {
+        dispatch(GoodsActions.fetchGoods(filters))
+    }
+
+    const getGoodsDebounce = useCallback(debounce(getGoods, 1500), [])
 
     useEffect(() => {
         dispatch(CategoriesActions.fetchCategories({}))
-        debounceDispatch(vaLue)
-    }, [vaLue])
+    }, [])
 
-    const navigate = useNavigate()
-
-    const goods = useSelector(GoodsSelectors.getGoodsWithCategory);
-    const goodsStatus = useSelector(GoodsSelectors.getGoodsStatus)
-    const categories = useSelector(CategoriesSelectors.getCategories)
-
-    categories.map((item) => {
-        optionCategories.push(<Option value={item.id}>{item.label}</Option>)
-    })
-
-    const inputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = event.target.value
-        setVaLue({ text: newValue })
-    }
-
-    const sliderOnChange = (value: [number, number]) => {
-        setVaLue({ minPrice: value[0], maxPrice: value[1] })
-    }
-
-    const selectOnChange = (value: string[]) => {
-        setVaLue({ category: value })
-    }
-
-    const paginationOnChange = (page: number, pageSize?: number) => {
-        if(pageSize !== undefined) {
-            setVaLue({ limit: pageSize })
-        }
-    }
+    useEffect(() => {
+        getGoodsDebounce(filters)
+    }, [getGoodsDebounce, filters])
 
     return (
         <div>
-            <div>
-                <Input value={vaLue.text} style={{ width: '200px' }} placeholder='Поиск по товарам' onChange={inputOnChange} />
+            <div className={css.SearchParamsWrapper}>
+                <Input 
+                    value={filters.text} 
+                    style={{ width: '400px' }} 
+                    placeholder='Поиск по товарам' 
+                    onChange={({ target: { value: text } }) => {
+                        updateFilters({ text })
+                    }} />
                 <div>
                     Цена:
                     <Slider 
-                    range 
-                    defaultValue={[0, 1000]} 
-                    min={vaLue.minPrice} 
-                    max={vaLue.maxPrice} 
-                    style={{ width: '200px' }} 
-                    onChange={sliderOnChange} 
+                        range
+                        min={filters.minPrice} 
+                        max={filters.maxPrice} 
+                        value={[filters.minPrice, filters.maxPrice]}
+                        style={{ width: '400px' }} 
+                        onChange={([minPrice, maxPrice]) => {
+                            updateFilters({ minPrice, maxPrice })
+                        }} 
                     />
                 </div>
                 <Select
-                mode="multiple"
-                allowClear
-                style={{ width: '200px' }}
-                placeholder="Выберите категорию"
-                onChange={selectOnChange}
-                >
-                    {optionCategories}
-                </Select>
+                    mode="multiple"
+                    allowClear
+                    style={{ width: '400px' }}
+                    placeholder="Выберите категорию"
+                    onChange={(favouriteCategories: string[] = []) => {
+                        updateFilters({ favouriteCategories })
+                    }}
+                    options={categoriesOptions}
+                    value={filters.favouriteCategories}
+                />
             </div>
-            {goodsStatus === 'loading' && <Loader type='Puff' color='#0fb' height={200} width={200} />}
-            {goodsStatus === 'loaded' && (
-                <div>
-                    <Table 
+            <div>
+                <Table 
+                    rowKey="id"
+                    loading={goodsLoadStatus === LOAD_STATUSES.LOADING}
                     dataSource={goods} 
                     columns={columnsName} 
                     pagination={{
-                        defaultCurrent: 1,
-                        defaultPageSize: vaLue.limit, 
-                        pageSize: vaLue.limit,
+                        current: filters.offset / filters.limit + 1,
+                        pageSize: filters.limit,
                         pageSizeOptions: ['10', '20', '60', '100'],
-                        total: vaLue.offset,
-                        onChange: paginationOnChange
+                        total: totalGoods,
+                        onChange: paginationHandler
                     }}
                     onRow={(record) => {
                         return {
@@ -125,9 +102,10 @@ export const GoodsPage = () => {
                                 navigate(`/product/${record.categoryTypeId}/${record.id}`)
                             }
                         }
-                    }} />
-                </div>
-            )}
+                    }} 
+                />
+            </div>
+            )
         </div>
     )
 }

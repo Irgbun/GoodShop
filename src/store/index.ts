@@ -1,6 +1,6 @@
 export { store } from './store'
 
-
+export { LOAD_STATUSES } from './goodsSlice'
 
 export { CartSelectors } from './cartSlice'
 export { CategoriesSelectors } from './categoriesSlice'
