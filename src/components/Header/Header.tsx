@@ -30,7 +30,7 @@ export const Header = () => {
     }, [])
 
     useEffect(() => {
-        dispatch(getGoodsDebounce(searchValue))
+        getGoodsDebounce(searchValue)
     }, [searchValue])
 
     const cart = useSelector(CartSelectors.getCart)
