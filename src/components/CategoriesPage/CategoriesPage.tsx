@@ -50,7 +50,7 @@ export const CategoriesPage = () => {
           <Row>
             {goods.map((item: GoodsMap) => {
               return (
-                <Col span={6}>
+                <Col span={4}>
                   <CardProducts label={item.label} price={item.price} img={item.img} type={item.categoryTypeId} id={item.id} />
                 </Col>)})}
           </Row>
