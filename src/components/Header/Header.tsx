@@ -3,28 +3,37 @@ import { Input, Badge, Dropdown, Menu } from 'antd'
 import { useEffect, useState, useCallback } from 'react'
 import { debounce } from 'lodash'
 import { useSelector, useDispatch } from "react-redux";
-import { CartSelectors, CartActions, GoodsActions, GoodsSelectors } from "../../store";
+import { CartSelectors, CartActions } from "../../store";
 import css from './Header.module.css'
 import cartImg from './cart.jpg'
 import LogotipeImg from './headerLogotipe.png'
-
+import { Api } from '../../api'
+import type { Good } from '../../api'
 
 export const Header = () => {
     const dispatch = useDispatch()
 
     const [ searchValue, setSearchValue ] = useState<string>("")
+    const [ goods, setGoods ] = useState<Good[]>([])
 
-    const debounceSeatch = useCallback(debounce((text: string) => {
-        dispatch(GoodsActions.fetchGoods({ text }))
-    }, 1500), [])
+    const getGoods = (text: string) => {
+        const api = new Api
+        api.getDataGoods({ text }).then(({ items }) => {
+            setGoods(items)
+        })
+    }
+
+    const getGoodsDebounce = useCallback(debounce(getGoods, 1500), [])
 
     useEffect(() => {
         dispatch(CartActions.getFetchCart())
-        debounceSeatch(searchValue)
+    }, [])
+
+    useEffect(() => {
+        dispatch(getGoodsDebounce(searchValue))
     }, [searchValue])
 
     const cart = useSelector(CartSelectors.getCart)
-    const goods = useSelector(GoodsSelectors.getGoodsWithCategory)
 
     const dropdownMenuList = (
         <Menu>
@@ -45,14 +54,18 @@ export const Header = () => {
     )
 
     const dropdownNothing = (
-        <div>Ничего не найдено, попробуйте изменить запрос</div>
+        <Menu>
+            <Menu.Item>
+                Ничего не найдено, попробуйте изменить запрос
+            </Menu.Item>
+        </Menu>
     )
 
     const dropdownMenu = () => {
         if (searchValue === "") {
             return <div></div>
         } else {
-            return goods === [] ? dropdownNothing : dropdownMenuList
+            return goods.length === 0 ? dropdownNothing : dropdownMenuList
         }
     }
 
@@ -65,12 +78,20 @@ export const Header = () => {
         <div className={css.HeaderWrapper}>
             <div>
                 <Link to={'/'}>
-                    <img src={LogotipeImg} alt={"Logotipe"} className={css.HeaderLogotipeImg} />
+                    <img 
+                        src={LogotipeImg} 
+                        alt={"Logotipe"} 
+                        className={css.HeaderLogotipeImg} />
                 </Link>
             </div>
             <div>
                 <Dropdown overlay={dropdownMenu} >
-                    <Input value={searchValue} placeholder="Поиск" style={{ width: '600px' }} onChange={searchOnChange} />
+                    <Input 
+                        value={searchValue} 
+                        placeholder="Поиск" 
+                        style={{ width: '600px' }} 
+                        onChange={searchOnChange} 
+                    />
                 </Dropdown>
             </div>
             <div>
@@ -79,9 +100,16 @@ export const Header = () => {
                 </Link>
             </div>
             <div>   
-                <Badge count={cart.length !== 0 ? cart.length : null} className={css.HeaderBadge} >
+                <Badge 
+                    count={cart.length !== 0 ? cart.length : null} 
+                    className={css.HeaderBadge} 
+                >
                     <button className={css.HeaderButtonCart}>
-                        <img src={cartImg} alt={"Cart"} className={css.HeaderCartImg} />
+                        <img 
+                            src={cartImg} 
+                            alt={"Cart"} 
+                            className={css.HeaderCartImg} 
+                        />
                     </button>
                 </Badge>
             </div>
